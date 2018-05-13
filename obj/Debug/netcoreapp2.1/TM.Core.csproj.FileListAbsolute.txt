@@ -1,0 +1,11 @@
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.csprojAssemblyReference.cache
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.csproj.CoreCompileInputs.cache
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.AssemblyInfoInputs.cache
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.AssemblyInfo.cs
+D:\Applications\TM.Core\bin\Debug\netcoreapp2.1\TM.Core.deps.json
+D:\Applications\TM.Core\bin\Debug\netcoreapp2.1\TM.Core.runtimeconfig.json
+D:\Applications\TM.Core\bin\Debug\netcoreapp2.1\TM.Core.runtimeconfig.dev.json
+D:\Applications\TM.Core\bin\Debug\netcoreapp2.1\TM.Core.dll
+D:\Applications\TM.Core\bin\Debug\netcoreapp2.1\TM.Core.pdb
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.dll
+D:\Applications\TM.Core\obj\Debug\netcoreapp2.1\TM.Core.pdb
