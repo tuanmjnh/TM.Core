@@ -10,85 +10,87 @@ namespace TM.Core.Helper {
         string[] Extension;
         bool Rename = true;
         int MaxFileCount = 5;
-
-        public Upload (Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, string[] Extension, bool Rename = true, int MaxFileCount = 5) {
+        System.Collections.Generic.List<string> Error;
+        public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, string[] Extension, bool Rename = true, int MaxFileCount = 5) {
             this.files = files;
-            this.uploadDir = uploadDir.Trim ('\\');
+            this.uploadDir = uploadDir.Trim('\\');
             this.Extension = Extension;
             this.Rename = Rename;
             this.MaxFileCount = MaxFileCount;
+            //this.Error =
         }
-        public Upload (Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, bool Rename, int MaxFileCount = 5) {
+        public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, bool Rename, int MaxFileCount = 5) {
             this.files = files;
-            this.uploadDir = uploadDir.Trim ('\\');
+            this.uploadDir = uploadDir.Trim('\\');
             this.Extension = null;
             this.Rename = Rename;
             this.MaxFileCount = MaxFileCount;
         }
-        public Upload (Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, bool Rename) {
+        public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, bool Rename) {
             this.files = files;
-            this.uploadDir = uploadDir.Trim ('\\');
+            this.uploadDir = uploadDir.Trim('\\');
             this.Extension = null;
             this.Rename = Rename;
         }
-        public Upload (Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, string[] Extension) {
+        public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, string[] Extension) {
             this.files = files;
-            this.uploadDir = uploadDir.Trim ('\\');
+            this.uploadDir = uploadDir.Trim('\\');
             this.Extension = Extension;
         }
-        public Upload (Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir) {
+        public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir) {
             this.files = files;
-            this.uploadDir = uploadDir.Trim ('\\');
+            this.uploadDir = uploadDir.Trim('\\');
         }
 
         //File Size Name
-        public System.Collections.Generic.Dictionary<long, string> FileSizeName () {
-            var rs = new System.Collections.Generic.Dictionary<long, string> ();
-            if (files.Count > 0) {
-                //Create Directory Upload
-                var UploadsDir = TM.Core.Helper.IO.MapPath (uploadDir);
-                TM.Core.Helper.IO.CreateDirectory (UploadsDir, false);
-                //Upload File
-                long size = 0;
-                for (int i = 0; i < files.Count; i++) {
-                    if (MaxFileCount > 0)
-                        if (i >= MaxFileCount)
-                            break;
+        public System.Collections.Generic.Dictionary<long, string> FileSizeName() {
+            var rs = new System.Collections.Generic.Dictionary<long, string>();
+            if (files.Count < 0 || (files.Count > 0 && files[0].Length > 0))
+                this.Error.Add("null");
 
-                    size = files[i].Length;
-                    if (size < 1) continue;
-                    var filename = ContentDispositionHeaderValue.Parse (files[i].ContentDisposition).FileName.ToString ().Trim ('"');
-                    if (Rename) filename = (Guid.NewGuid ().ToString ("N") + filename.ToExtension ()).ToLower ();
-                    rs.Add (size, filename);
+            //Create Directory Upload
+            var UploadsDir = TM.Core.Helper.IO.MapPath(uploadDir);
+            TM.Core.Helper.IO.CreateDirectory(UploadsDir, false);
+            //Upload File
+            long size = 0;
+            for (int i = 0; i < files.Count; i++) {
+                if (MaxFileCount > 0)
+                    if (i >= MaxFileCount)
+                        break;
 
-                    if (Extension != null)
-                        if (!filename.IsExtension (Extension)) {
-                            //UploadError.Add("Extension:" + file.FileName);
-                            continue;
-                        }
+                size = files[i].Length;
+                if (size < 1)continue;
+                var filename = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.ToString().Trim('"');
+                if (Rename)filename = (Guid.NewGuid().ToString("N")+ filename.ToExtension()).ToLower();
+                rs.Add(size, filename);
 
-                    filename = $@"{UploadsDir}\{filename}";
-
-                    using (FileStream fs = File.Create (filename)) {
-                        files[i].CopyTo (fs);
-                        fs.Flush ();
+                if (Extension != null)
+                    if (!filename.IsExtension(Extension)) {
+                        this.Error.Add("extension");
+                        continue;
                     }
+
+                filename = $@"{UploadsDir}\{filename}";
+
+                using(FileStream fs = File.Create(filename)) {
+                    files[i].CopyTo(fs);
+                    fs.Flush();
                 }
             }
             return rs;
         }
         //Images Size Name
-        public System.Collections.Generic.Dictionary<long, string> ImagesSizeName () {
+        public System.Collections.Generic.Dictionary<long, string> ImagesSizeName() {
             this.Extension = Common.Extensions.Images;
-            return FileSizeName ();
+            return FileSizeName();
         }
         //File Size FullName
-        public System.Collections.Generic.Dictionary<long, string> FileSizeFullName () {
-            var rs = new System.Collections.Generic.Dictionary<long, string> ();
+        public System.Collections.Generic.Dictionary<long, string> FileSizeFullName() {
+            var rs = new System.Collections.Generic.Dictionary<long, string>();
             if (files.Count > 0) {
                 //Create Directory Upload
-                var UploadsDir = TM.Core.Helper.IO.MapPath (uploadDir);
-                TM.Core.Helper.IO.CreateDirectory (UploadsDir, false);
+                var UploadsDir = TM.Core.Helper.IO.MapPath(uploadDir);
+                TM.Core.Helper.IO.CreateDirectory(UploadsDir, false);
                 //Upload File
                 long size = 0;
                 for (int i = 0; i < files.Count; i++) {
@@ -97,55 +99,59 @@ namespace TM.Core.Helper {
                             break;
 
                     size = files[i].Length;
-                    if (size < 1) continue;
-                    var filename = ContentDispositionHeaderValue.Parse (files[i].ContentDisposition).FileName.ToString ().Trim ('"');
-                    if (Rename) filename = (Guid.NewGuid ().ToString ("N") + filename.ToExtension ()).ToLower ();
+                    if (size < 1)continue;
+                    var filename = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.ToString().Trim('"');
+                    if (Rename)filename = (Guid.NewGuid().ToString("N")+ filename.ToExtension()).ToLower();
 
                     if (Extension != null)
-                        if (!filename.IsExtension (Extension)) {
+                        if (!filename.IsExtension(Extension)) {
                             //UploadError.Add("Extension:" + file.FileName);
                             continue;
                         }
 
                     filename = $@"{UploadsDir}\{filename}";
-                    rs.Add (size, filename);
+                    rs.Add(size, filename);
 
-                    using (FileStream fs = File.Create (filename)) {
-                        files[i].CopyTo (fs);
-                        fs.Flush ();
+                    using(FileStream fs = File.Create(filename)) {
+                        files[i].CopyTo(fs);
+                        fs.Flush();
                     }
                 }
             }
             return rs;
         }
         //Images Size FullName
-        public System.Collections.Generic.Dictionary<long, string> ImagesSizeFullName () {
+        public System.Collections.Generic.Dictionary<long, string> ImagesSizeFullName() {
             this.Extension = Common.Extensions.Images;
-            return FileSizeFullName ();
+            return FileSizeFullName();
         }
         //File Name
-        public System.Collections.Generic.List<string> FileName () {
-            var rs = new System.Collections.Generic.List<string> ();
-            foreach (var item in FileSizeName ())
-                rs.Add (item.Value);
+        public System.Collections.Generic.List<string> FileName() {
+            var rs = new System.Collections.Generic.List<string>();
+            foreach (var item in FileSizeName())
+                rs.Add(item.Value);
             return rs;
         }
         //Images Name
-        public System.Collections.Generic.List<string> ImagesName () {
+        public System.Collections.Generic.List<string> ImagesName() {
             this.Extension = Common.Extensions.Images;
-            return FileName ();
+            return FileName();
         }
         //File FullName
-        public System.Collections.Generic.List<string> FileFullName () {
-            var rs = new System.Collections.Generic.List<string> ();
-            foreach (var item in FileSizeFullName ())
-                rs.Add (item.Value);
+        public System.Collections.Generic.List<string> FileFullName() {
+            var rs = new System.Collections.Generic.List<string>();
+            foreach (var item in FileSizeFullName())
+                rs.Add(item.Value);
             return rs;
         }
         //Images FullName
-        public System.Collections.Generic.List<string> ImagesFullName () {
+        public System.Collections.Generic.List<string> ImagesFullName() {
             this.Extension = Common.Extensions.Images;
-            return FileFullName ();
+            return FileFullName();
+        }
+        //Error
+        public System.Collections.Generic.List<string> UploadError() {
+            return this.Error;
         }
     }
 }

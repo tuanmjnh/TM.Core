@@ -5,23 +5,23 @@ using System.Linq;
 
 namespace TM.Core.Helper {
     public class IO {
-        public static string MapPath (string path) {
+        public static string MapPath(string path) {
             return $@"{TM.Core.Helper.TMAppContext.WebRootPath}\{path}";
         }
-        public static bool SetAccessRule (string directory, bool IsMapPath = true) {
-            var Rights = (System.Security.AccessControl.FileSystemRights) 0;
+        public static bool SetAccessRule(string directory, bool IsMapPath = true) {
+            var Rights = (System.Security.AccessControl.FileSystemRights)0;
             Rights = System.Security.AccessControl.FileSystemRights.FullControl;
             // *** Add Access Rule to the actual directory itself
-            var AccessRule = new System.Security.AccessControl.FileSystemAccessRule ("Users", Rights,
+            var AccessRule = new System.Security.AccessControl.FileSystemAccessRule("Users", Rights,
                 System.Security.AccessControl.InheritanceFlags.None,
                 System.Security.AccessControl.PropagationFlags.NoPropagateInherit,
                 System.Security.AccessControl.AccessControlType.Allow);
 
-            directory = IsMapPath ? MapPath (directory) : directory;
-            DirectoryInfo Info = new DirectoryInfo (directory);
-            var Security = Info.GetAccessControl (System.Security.AccessControl.AccessControlSections.Access);
+            directory = IsMapPath ? MapPath(directory): directory;
+            DirectoryInfo Info = new DirectoryInfo(directory);
+            var Security = Info.GetAccessControl(System.Security.AccessControl.AccessControlSections.Access);
             bool Result = false;
-            Security.ModifyAccessRule (System.Security.AccessControl.AccessControlModification.Set, AccessRule, out Result);
+            Security.ModifyAccessRule(System.Security.AccessControl.AccessControlModification.Set, AccessRule, out Result);
 
             if (!Result)
                 return false;
@@ -29,181 +29,190 @@ namespace TM.Core.Helper {
             var iFlags = System.Security.AccessControl.InheritanceFlags.ObjectInherit;
             iFlags = System.Security.AccessControl.InheritanceFlags.ContainerInherit | System.Security.AccessControl.InheritanceFlags.ObjectInherit;
             // *** Add Access rule for the inheritance
-            AccessRule = new System.Security.AccessControl.FileSystemAccessRule ("Users", Rights,
+            AccessRule = new System.Security.AccessControl.FileSystemAccessRule("Users", Rights,
                 iFlags,
                 System.Security.AccessControl.PropagationFlags.InheritOnly,
                 System.Security.AccessControl.AccessControlType.Allow);
             Result = false;
-            Security.ModifyAccessRule (System.Security.AccessControl.AccessControlModification.Add, AccessRule, out Result);
+            Security.ModifyAccessRule(System.Security.AccessControl.AccessControlModification.Add, AccessRule, out Result);
             if (!Result)
                 return false;
-            Info.SetAccessControl (Security);
+            Info.SetAccessControl(Security);
             return true;
         }
-        public static bool Rename (string sourceFile, string DestFile, bool IsMapPath = true) {
+        public static bool Rename(string sourceFile, string DestFile, bool IsMapPath = true) {
             try {
-                sourceFile = IsMapPath ? MapPath (sourceFile) : sourceFile;
-                DestFile = IsMapPath ? MapPath (DestFile) : DestFile;
-                File.Move (sourceFile, DestFile);
+                sourceFile = IsMapPath ? MapPath(sourceFile): sourceFile;
+                DestFile = IsMapPath ? MapPath(DestFile): DestFile;
+                File.Move(sourceFile, DestFile);
                 return true;
             } catch (Exception) { return false; }
         }
-        public static FileInfo ReExtension (string sourceFile, string extension, bool IsMapPath = true) {
+        public static FileInfo ReExtension(string sourceFile, string extension, bool IsMapPath = true) {
             try {
-                sourceFile = IsMapPath ? MapPath (sourceFile) : sourceFile;
-                var file = new FileInfo (sourceFile);
-                var DestFile = sourceFile.Replace (file.Extension, extension);
-                File.Move (sourceFile, DestFile);
-                return new FileInfo (DestFile);
+                sourceFile = IsMapPath ? MapPath(sourceFile): sourceFile;
+                var file = new FileInfo(sourceFile);
+                var DestFile = sourceFile.Replace(file.Extension, extension);
+                File.Move(sourceFile, DestFile);
+                return new FileInfo(DestFile);
             } catch (Exception) { return null; }
         }
-        public static FileInfo ReExtensionToLower (string sourceFile, bool IsMapPath = true) {
+        public static FileInfo ReExtensionToLower(string sourceFile, bool IsMapPath = true) {
             try {
-                sourceFile = IsMapPath ? MapPath (sourceFile) : sourceFile;
-                var file = new FileInfo (sourceFile);
-                var DestFile = sourceFile.Replace (file.Extension, file.Extension.ToLower ());
-                File.Move (sourceFile, DestFile);
-                return new FileInfo (DestFile);
+                sourceFile = IsMapPath ? MapPath(sourceFile): sourceFile;
+                var file = new FileInfo(sourceFile);
+                var DestFile = sourceFile.Replace(file.Extension, file.Extension.ToLower());
+                File.Move(sourceFile, DestFile);
+                return new FileInfo(DestFile);
             } catch (Exception) { return null; }
         }
-        public static bool Copy (string sourceFile, string DestFile, bool IsMapPath = true) {
+        public static bool Copy(string sourceFile, string DestFile, bool IsMapPath = true) {
             try {
-                sourceFile = IsMapPath ? MapPath (sourceFile) : sourceFile;
-                DestFile = IsMapPath ? MapPath (DestFile) : DestFile;
-                File.Copy (sourceFile, DestFile);
+                sourceFile = IsMapPath ? MapPath(sourceFile): sourceFile;
+                DestFile = IsMapPath ? MapPath(DestFile): DestFile;
+                File.Copy(sourceFile, DestFile);
                 return true;
             } catch (Exception) { return false; }
         }
-        public static bool Copy (string sourceFile) {
-            return Copy (sourceFile, CreateFileExist (sourceFile));
+        public static bool Copy(string sourceFile) {
+            return Copy(sourceFile, CreateFileExist(sourceFile));
         }
-        public static bool Delete (string path, bool IsMapPath = true) {
+        public static bool Delete(string path, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
-                if (File.Exists (path)) {
-                    File.Delete (path);
+                path = IsMapPath ? MapPath(path): path;
+                if (File.Exists(path)) {
+                    File.Delete(path);
                     return true;
                 } else return true;
             } catch (Exception) { throw; }
         }
-        public static bool Delete (string path, string[] files, bool IsMapPath = true) {
+        public static bool Delete(string path, string[] files, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
+                path = IsMapPath ? MapPath(path): path;
                 foreach (var item in files)
-                    if (File.Exists (path + item))
-                        File.Delete (path + item);
+                    if (File.Exists(path + item))
+                        File.Delete(path + item);
                 return true;
                 //else return false;
             } catch (Exception) { throw; }
         }
-        public static bool Delete (string path, FileInfo[] files, bool IsMapPath = true) {
+        public static bool Delete(string path, FileInfo[] files, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
+                path = IsMapPath ? MapPath(path): path;
                 foreach (var item in files)
-                    if (File.Exists (path + item.Name))
-                        File.Delete (path + item.Name);
+                    if (File.Exists(path + item.Name))
+                        File.Delete(path + item.Name);
                 return true;
                 //else return false;
             } catch (Exception) { throw; }
         }
-        public static bool DeleteDirectory (string path, bool IsMapPath = true) {
+        public static bool DeleteDirectory(string path, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
-                if (Directory.Exists (path)) {
-                    foreach (var item in Files (path, false))
-                        File.Delete (item.FullName);
-                    Directory.Delete (path);
+                path = IsMapPath ? MapPath(path): path;
+                if (Directory.Exists(path)) {
+                    foreach (var item in Files(path, false))
+                        File.Delete(item.FullName);
+                    Directory.Delete(path);
                     return true;
                 } else return false;
             } catch (Exception) { throw; }
         }
-        public static bool CreateDirectory (string path, bool IsMapPath = true) {
+        public static bool CreateDirectory(string path, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
-                path = path.Trim ('/', '\\');
-                if (!Directory.Exists (path)) {
-                    Directory.CreateDirectory (path);
-                    var directory = new DirectoryInfo (path);
+                path = IsMapPath ? MapPath(path): path;
+                path = path.Trim('/', '\\');
+                if (!Directory.Exists(path)) {
+                    Directory.CreateDirectory(path);
+                    var directory = new DirectoryInfo(path);
                     return true;
                 }
                 return false;
             } catch (Exception) { throw; }
         }
-        public static string CreateFileExist (string file, bool IsMapPath = true) {
+        public static string CreateFileExist(string file, bool IsMapPath = true) {
             try {
                 int countFile = 0;
-                file = IsMapPath ? MapPath (file) : file;
-                string extension = Path.GetExtension (MapPath (file));
-                while (File.Exists (file.Substring (0, file.Length - extension.Length) + (countFile > 0 ? "(" + countFile.ToString () + ")" : "") + extension))
+                file = IsMapPath ? MapPath(file): file;
+                string extension = Path.GetExtension(MapPath(file));
+                while (File.Exists(file.Substring(0, file.Length - extension.Length)+ (countFile > 0 ? "(" + countFile.ToString()+ ")" : "")+ extension))
                     countFile++;
-                file = file.Substring (0, file.Length - extension.Length) + (countFile > 0 ? "(" + countFile.ToString () + ")" : "") + extension;
+                file = file.Substring(0, file.Length - extension.Length)+ (countFile > 0 ? "(" + countFile.ToString()+ ")" : "")+ extension;
                 return file;
             } catch (Exception) { throw; }
         }
-        public static byte[] ReturnByteFile (string path, bool IsMapPath = true) {
+        public static byte[] ReturnByteFile(string path, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
-                byte[] fileBytes = File.ReadAllBytes (path);
+                path = IsMapPath ? MapPath(path): path;
+                byte[] fileBytes = File.ReadAllBytes(path);
                 return fileBytes;
             } catch (Exception) { throw; }
         }
-        public static DirectoryInfo[] Directories (string path, bool IsMapPath = true) {
+        public static DirectoryInfo[] Directories(string path, bool IsMapPath = true) {
             try {
-                path = IsMapPath ? MapPath (path) : path;
-                var Dir = new DirectoryInfo (path);
-                return Dir.GetDirectories ();
+                path = IsMapPath ? MapPath(path): path;
+                var Dir = new DirectoryInfo(path);
+                return Dir.GetDirectories();
             } catch (Exception) { throw; }
         }
-        public static System.Collections.Generic.List<string> DirectoriesToList (string path, bool IsMapPath = true) {
+        public static System.Collections.Generic.List<string> DirectoriesToList(string path, bool IsMapPath = true) {
             try {
-                var list = new System.Collections.Generic.List<string> ();
-                var subDir = Directories (path, IsMapPath);
+                var list = new System.Collections.Generic.List<string>();
+                var subDir = Directories(path, IsMapPath);
                 foreach (var item in subDir)
-                    list.Add (item.Name);
+                    list.Add(item.Name);
                 return list;
             } catch (Exception) { throw; }
         }
-        public static FileInfo[] Files (string path, string[] extension = null, bool IsMapPath = true) {
+        public static FileInfo[] Files(string path, string[] extension = null, bool IsMapPath = true) {
             try {
                 //var files = System.IO.Directory.GetDirectories(path);
                 //string[] ext = new[] { ".dbf" };
-                path = IsMapPath ? MapPath (path) : path;
-                var Dir = new DirectoryInfo (path);
+                path = IsMapPath ? MapPath(path): path;
+                var Dir = new DirectoryInfo(path);
                 if (extension != null)
-                    return Dir.GetFiles ().Where (f => extension.Contains (f.Extension.ToLower ())).ToArray ();
+                    return Dir.GetFiles().Where(f => extension.Contains(f.Extension.ToLower())).ToArray();
                 else
-                    return Dir.GetFiles ();
+                    return Dir.GetFiles();
                 //var subFiles = di.GetFiles("*.dbf").Concat(di.GetFiles("*.dbf2"));
             } catch (Exception) { throw; }
         }
-        public static FileInfo[] Files (string path, bool IsMapPath = true) {
-            return Files (path, null, IsMapPath);
+        public static FileInfo[] Files(string path, bool IsMapPath = true) {
+            return Files(path, null, IsMapPath);
         }
-        public static System.Collections.Generic.List<string> FilesToList (string path, string[] extension, bool IsMapPath = true) {
+        public static System.Collections.Generic.List<string> FilesToList(string path, string[] extension, bool IsMapPath = true) {
             try {
-                var list = new System.Collections.Generic.List<string> ();
-                var subFiles = Files (path, extension, IsMapPath);
+                var list = new System.Collections.Generic.List<string>();
+                var subFiles = Files(path, extension, IsMapPath);
                 foreach (var item in subFiles)
-                    list.Add (item.Name.Replace (item.Extension, item.Extension.ToLower ()));
+                    list.Add(item.Name.Replace(item.Extension, item.Extension.ToLower()));
                 return list;
             } catch (Exception) { throw; }
         }
-        public static System.Collections.Generic.List<string> FilesToList (string path, bool IsMapPath = true) {
-            return FilesToList (path, null, IsMapPath);
+        public static System.Collections.Generic.List<string> FilesToList(string path, bool IsMapPath = true) {
+            return FilesToList(path, null, IsMapPath);
         }
-        public static string[] ReadFile (string filename) {
+        public static string[] ReadFile(string filename) {
 
-            var file = MapPath (filename);
-            var list = System.IO.File.ReadAllLines (file);
+            var file = MapPath(filename);
+            var list = System.IO.File.ReadAllLines(file);
             return list;
         }
-        public static System.Collections.Generic.List<string[]> ReadFile (string filename, char split) {
-            var rs = new System.Collections.Generic.List<string[]> ();
-            foreach (var item in ReadFile (filename)) {
-                var tmp = item.Split (split);
-                rs.Add (tmp);
+        public static System.Collections.Generic.List<string[]> ReadFile(string filename, char split) {
+            var rs = new System.Collections.Generic.List<string[]>();
+            foreach (var item in ReadFile(filename)) {
+                var tmp = item.Split(split);
+                rs.Add(tmp);
             }
             return rs;
+        }
+        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path, string DestName) {
+            return new Microsoft.AspNetCore.Mvc.FileContentResult(ReturnByteFile(path), System.Net.Mime.MediaTypeNames.Application.Octet) { FileDownloadName = DestName };
+        }
+        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path) {
+            path = path.Replace('\\', '/');
+            string[] tmp = path.Trim('/').Split('/');
+            string FileName = tmp[tmp.Length - 1];
+            return FileContentResult(path, FileName);
         }
         //public static System.Collections.Generic.List<string> ImageCodecs()
         //{
@@ -441,59 +450,59 @@ namespace TM.Core.Helper {
     //}
 }
 public static class IOS {
-    public static string ToExtension (this string file) {
+    public static string ToExtension(this string file) {
         try {
-            return Path.GetExtension (file);
+            return Path.GetExtension(file);
         } catch (Exception) { throw; }
     }
-    public static string ToExtensionNone (this string file) {
-        return ToExtension (file).Trim ('.');
+    public static string ToExtensionNone(this string file) {
+        return ToExtension(file).Trim('.');
     }
-    public static bool IsExtension (this string file, string Extension) {
+    public static bool IsExtension(this string file, string Extension) {
         try {
-            if (file.ToExtension ().ToLower () == (Extension[0].ToString () == "." ? Extension.ToLower () : "." + Extension.ToLower ()))
+            if (file.ToExtension().ToLower()== (Extension[0].ToString()== "." ? Extension.ToLower(): "." + Extension.ToLower()))
                 return true;
             else return false;
         } catch (Exception) { throw; }
     }
-    public static bool IsExtension (this string file, string[] Extension) {
+    public static bool IsExtension(this string file, string[] Extension) {
         if (Extension.Length > 0)
             foreach (var item in Extension)
-                if (file.IsExtension (item)) return true;
+                if (file.IsExtension(item))return true;
         return false;
     }
-    public static System.Collections.Generic.List<string> UploadFileSource (this System.Collections.Generic.Dictionary<string, object> Upload) {
+    public static System.Collections.Generic.List<string> UploadFileSource(this System.Collections.Generic.Dictionary<string, object> Upload) {
         try {
-            return (System.Collections.Generic.List<string>) Upload["UploadFileSource"];
+            return (System.Collections.Generic.List<string>)Upload["UploadFileSource"];
         } catch (Exception) {
             return null;
         }
 
     }
-    public static string UploadFileSourceString (this System.Collections.Generic.Dictionary<string, object> Upload) {
+    public static string UploadFileSourceString(this System.Collections.Generic.Dictionary<string, object> Upload) {
         try {
-            return (string) Upload["UploadFileSourceString"];
+            return (string)Upload["UploadFileSourceString"];
         } catch (Exception) {
             return null;
         }
     }
-    public static System.Collections.Generic.List<string> UploadFile (this System.Collections.Generic.Dictionary<string, object> Upload) {
+    public static System.Collections.Generic.List<string> UploadFile(this System.Collections.Generic.Dictionary<string, object> Upload) {
         try {
-            return (System.Collections.Generic.List<string>) Upload["UploadFile"];
+            return (System.Collections.Generic.List<string>)Upload["UploadFile"];
         } catch (Exception) {
             return null;
         }
     }
-    public static string UploadFileString (this System.Collections.Generic.Dictionary<string, object> Upload) {
+    public static string UploadFileString(this System.Collections.Generic.Dictionary<string, object> Upload) {
         try {
-            return (string) Upload["UploadFileString"];
+            return (string)Upload["UploadFileString"];
         } catch (Exception) {
             return null;
         }
     }
-    public static System.Collections.Generic.List<string> UploadError (this System.Collections.Generic.Dictionary<string, object> Upload) {
+    public static System.Collections.Generic.List<string> UploadError(this System.Collections.Generic.Dictionary<string, object> Upload) {
         try {
-            return (System.Collections.Generic.List<string>) Upload["UploadError"];
+            return (System.Collections.Generic.List<string>)Upload["UploadError"];
         } catch (Exception) {
             return null;
         }

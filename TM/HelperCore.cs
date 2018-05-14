@@ -14,7 +14,7 @@ namespace TM.Core.Helper {
             get { return services; }
             set {
                 if (services != null) {
-                    throw new Exception ("Can't set once a value has already been set.");
+                    throw new Exception("Can't set once a value has already been set.");
                 }
                 services = value;
             }
@@ -25,19 +25,19 @@ namespace TM.Core.Helper {
         /// </summary>
         public static Microsoft.AspNetCore.Http.HttpContext Http {
             get {
-                var HttpContextAccessor = services.GetService (typeof (Microsoft.AspNetCore.Http.IHttpContextAccessor)) as Microsoft.AspNetCore.Http.IHttpContextAccessor;
+                var HttpContextAccessor = services.GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextAccessor)) as Microsoft.AspNetCore.Http.IHttpContextAccessor;
                 return HttpContextAccessor?.HttpContext;
             }
         }
         public static Microsoft.AspNetCore.Mvc.ActionContext Action {
             get {
-                var ActionContextAccessor = services.GetService (typeof (Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor)) as Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor;
+                var ActionContextAccessor = services.GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor)) as Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor;
                 return ActionContextAccessor?.ActionContext;
             }
         }
         public static Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment {
             get {
-                return ((Microsoft.AspNetCore.Hosting.IHostingEnvironment) Http.RequestServices.GetService (typeof (Microsoft.AspNetCore.Hosting.IHostingEnvironment)));
+                return ((Microsoft.AspNetCore.Hosting.IHostingEnvironment) Http.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)));
             }
         }
         public static string ContentRootPath {
@@ -52,62 +52,62 @@ namespace TM.Core.Helper {
         }
         public static string CurrentController {
             get {
-                return Action.RouteData.Values["controller"].ToString ();
+                return Action.RouteData.Values["controller"].ToString();
             }
         }
         public static string CurrentAction {
             get {
-                return Action.RouteData.Values["action"].ToString ();
+                return Action.RouteData.Values["action"].ToString();
             }
         }
         //AppSettings
         public static IConfiguration configuration {
             get {
-                var configuration = services.GetService (typeof (IConfiguration)) as IConfiguration;
+                var configuration = services.GetService(typeof(IConfiguration)) as IConfiguration;
                 return configuration;
             }
         }
     }
     //Session Extensions
     public static class SessionExtensions {
-        public static void Set<T> (this Microsoft.AspNetCore.Http.ISession session, string key, T value) {
-            session.SetString (key, Newtonsoft.Json.JsonConvert.SerializeObject (value));
+        public static void Set<T>(this Microsoft.AspNetCore.Http.ISession session, string key, T value) {
+            session.SetString(key, Newtonsoft.Json.JsonConvert.SerializeObject(value));
         }
 
-        public static T Get<T> (this Microsoft.AspNetCore.Http.ISession session, string key) {
-            var value = session.GetString (key);
-            return value == null ? default (T) : Newtonsoft.Json.JsonConvert.DeserializeObject<T> (value);
+        public static T Get<T>(this Microsoft.AspNetCore.Http.ISession session, string key) {
+            var value = session.GetString(key);
+            return value == null ? default(T) : Newtonsoft.Json.JsonConvert.DeserializeObject<T>(value);
         }
     }
     //Export to AnonymousData
     public static class AnonymousData {
-        public static System.Dynamic.ExpandoObject ToExpando (this object anonymousObject) {
-            System.Collections.Generic.IDictionary<string, object> anonymousDictionary = Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.AnonymousObjectToHtmlAttributes (anonymousObject);
-            System.Collections.Generic.IDictionary<string, object> expando = new System.Dynamic.ExpandoObject ();
+        public static System.Dynamic.ExpandoObject ToExpando(this object anonymousObject) {
+            System.Collections.Generic.IDictionary<string, object> anonymousDictionary = Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.AnonymousObjectToHtmlAttributes(anonymousObject);
+            System.Collections.Generic.IDictionary<string, object> expando = new System.Dynamic.ExpandoObject();
             foreach (var item in anonymousDictionary)
-                expando.Add (item);
+                expando.Add(item);
             return (System.Dynamic.ExpandoObject) expando;
         }
     }
     //Message
     public static class Message {
-        public static void success (this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
+        public static void success(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
             controller.TempData["MsgSuccess"] = message;
         }
-        public static void info (this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
+        public static void info(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
             controller.TempData["MsgInfo"] = message;
         }
-        public static void warning (this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
+        public static void warning(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
             controller.TempData["MsgWarning"] = message;
         }
-        public static void danger (this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
+        public static void danger(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
             controller.TempData["MsgDanger"] = message;
         }
     }
 }
-namespace TM.Helper.Extension {
+namespace TM.Core.Helper.Extensions {
     //Extensions
-    public static class Extensions {
+    public static class Extension {
         /// <summary>
         /// Extension method to add pagination info to Response headers
         /// </summary>
@@ -126,10 +126,10 @@ namespace TM.Helper.Extension {
         //    response.Headers.Add("access-control-expose-headers", "Pagination");
         //}
 
-        public static void AddApplicationError (this HttpResponse response, string message) {
-            response.Headers.Add ("Application-Error", message);
+        public static void AddApplicationError(this HttpResponse response, string message) {
+            response.Headers.Add("Application-Error", message);
             // CORS
-            response.Headers.Add ("access-control-expose-headers", "Application-Error");
+            response.Headers.Add("access-control-expose-headers", "Application-Error");
         }
     }
 }
