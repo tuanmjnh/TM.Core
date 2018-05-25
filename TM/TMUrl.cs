@@ -2,51 +2,58 @@
 namespace TM.Core.Helper {
     public class Url {
         private static readonly string ContinueUrl = "continue";
-        public static string Base {
+        public static string BaseUrl {
             get {
-                var rs = string.Format ("{0}://{1}",
-                    TMAppContext.Http.Request.Scheme,
-                    TMAppContext.Http.Request.Host);
+                var rs = string.Format("{0}://{1}",
+                    TM.Core.HttpContext.Current.Http.Request.Scheme,
+                    TM.Core.HttpContext.Current.Http.Request.Host);
                 return rs;
             }
         }
         public static string BasePath {
             get {
-                var rs = string.Format ("{0}://{1}{2}",
-                    TMAppContext.Http.Request.Scheme,
-                    TMAppContext.Http.Request.Host,
-                    TMAppContext.Http.Request.Path);
+                var rs = string.Format("{0}://{1}{2}",
+                    TM.Core.HttpContext.Current.Http.Request.Scheme,
+                    TM.Core.HttpContext.Current.Http.Request.Host,
+                    TM.Core.HttpContext.Current.Http.Request.Path);
                 return rs;
             }
         }
         public static string Current {
             get {
-                var rs = string.Format ("{0}://{1}{2}{3}",
-                    TMAppContext.Http.Request.Scheme,
-                    TMAppContext.Http.Request.Host,
-                    TMAppContext.Http.Request.Path,
-                    TMAppContext.Http.Request.QueryString);
+                var rs = string.Format("{0}://{1}{2}{3}",
+                    TM.Core.HttpContext.Current.Http.Request.Scheme,
+                    TM.Core.HttpContext.Current.Http.Request.Host,
+                    TM.Core.HttpContext.Current.Http.Request.Path,
+                    TM.Core.HttpContext.Current.Http.Request.QueryString);
                 return rs;
             }
         }
         public static string Continue {
             get {
-                return Current.Replace (Base, "").Trim ('/');
+                return Current.Replace(BaseUrl, "").Trim('/');
             }
         }
-        public static string RedirectContinue {
-            get {
-                var a = TMAppContext.Http.Request.Query.ContainsKey (ContinueUrl);
-                if (a) {
-                    return Base + "/" + TMAppContext.Http.Request.Query.Where (d => d.Key == ContinueUrl).FirstOrDefault ().Value;
-                }
-                return BasePath;
-            }
+        public static string RedirectContinue() {
+            return RedirectContinue(BaseUrl);
+        }
+        public static string RedirectContinue(string url, bool ajaxRequest = false) {
+            var rs = BaseUrl;
+            if (ajaxRequest)
+                rs = url != null ? $"{rs}/{url.Replace("?continue=", "")}" : rs;
+            else
+                rs = TM.Core.HttpContext.Current.Http.Request.Query.ContainsKey(ContinueUrl) ? BaseUrl + "/" + TM.Core.HttpContext.Current.Http.Request.Query.Where(d => d.Key == ContinueUrl).FirstOrDefault().Value : BaseUrl;
+            return rs;
+            // var a = TM.Core.HttpContext.Current.Http.Request.Query.ContainsKey(ContinueUrl);
+            // if (a) {
+            //     return BaseUrl + "/" + TM.Core.HttpContext.Current.Http.Request.Query.Where(d => d.Key == ContinueUrl).FirstOrDefault().Value;
+            // }
+            // return BasePath;
         }
         //public static string BaseUrl = GetBaseUrl();
         //public static string GetBaseHost()
         //{
-        //    var request = TMAppContext.Http.Request;
+        //    var request = TM.Core.HttpContext.Current.Http.Request;
         //    return request.Url.Scheme + "://" + request.ServerVariables["HTTP_HOST"];
         //}
         //public static string GetBaseUrl()

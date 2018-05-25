@@ -1,7 +1,7 @@
 ﻿using System;
 namespace TM.Core.Helper {
     public static class Language {
-        private static string AppLanguage = "AppLanguage";
+        //private static string AppLanguage = "AppLanguage";
         public static string CurrentLang { get; set; }
         private static string Section { get; set; }
         public const string DefaultLang = "vi-vn";
@@ -14,61 +14,61 @@ namespace TM.Core.Helper {
         //{
 
         //}
-        public static Newtonsoft.Json.Linq.JObject LoadJson (string lang) {
+        public static Newtonsoft.Json.Linq.JObject LoadJson(string lang) {
             //var o1 = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(@"c:\videogames.json"));
 
             // read JSON directly from a file
-            using (var file = System.IO.File.OpenText (lang)) //"~\\cms\\Language\vi-vn.json"
-            using (var reader = new Newtonsoft.Json.JsonTextReader (file)) {
-                var o2 = (Newtonsoft.Json.Linq.JObject) Newtonsoft.Json.Linq.JToken.ReadFrom (reader);
+            using(var file = System.IO.File.OpenText(lang)) //"~\\cms\\Language\vi-vn.json"
+            using(var reader = new Newtonsoft.Json.JsonTextReader(file)) {
+                var o2 = (Newtonsoft.Json.Linq.JObject) Newtonsoft.Json.Linq.JToken.ReadFrom(reader);
                 return o2;
             }
         }
-        public static dynamic LoadJsonToList (string lang) {
-            var file = System.IO.File.ReadAllText (lang);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject (file);
+        public static dynamic LoadJsonToList(string lang) {
+            var file = System.IO.File.ReadAllText(lang);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(file);
         }
-        public static string ReadLanguageFile (string lang) {
-            return System.IO.File.ReadAllText (lang);
+        public static string ReadLanguageFile(string lang) {
+            return System.IO.File.ReadAllText(lang);
         }
-        public static string Set (string lang = null) {
+        public static string Set(string lang = null) {
             if (lang != null) {
                 Language.CurrentLang = lang;
-                Language.LangList = Newtonsoft.Json.JsonConvert.DeserializeObject (ReadLanguageFile (Common.Directories.languageDir + lang + ext));
+                Language.LangList = Newtonsoft.Json.JsonConvert.DeserializeObject(ReadLanguageFile(Common.Directories.languageDir + lang + ext));
             } else {
                 Language.CurrentLang = Language.DefaultLang;
-                Language.LangList = Newtonsoft.Json.JsonConvert.DeserializeObject (ReadLanguageFile (Common.Directories.languageDir + Language.CurrentLang + ext));
+                Language.LangList = Newtonsoft.Json.JsonConvert.DeserializeObject(ReadLanguageFile(Common.Directories.languageDir + Language.CurrentLang + ext));
             }
             return Language.CurrentLang;
         }
-        public static dynamic Get () {
-            if (Language.LangList == null) Set ();
+        public static dynamic Get() {
+            if (Language.LangList == null) Set();
             return Language.LangList;
         }
-        public static dynamic Get (string Section) {
-            return Get () [Section];
+        public static dynamic Get(string Section) {
+            return Get() [Section];
         }
         public static dynamic Global {
             get {
-                return Get (GlobalSection);
+                return Get(GlobalSection);
             }
         }
-        public static string Globals (string GlobalSection) {
+        public static string Globals(string GlobalSection) {
             return (string) Global[GlobalSection];
         }
         public static dynamic Current {
             get {
-                return Get (TMAppContext.Action.RouteData.Values["controller"].ToString ());
+                return Get(TM.Core.HttpContext.Current.Action.RouteData.Values["controller"].ToString());
             }
         }
-        public static string Currents (string CurrentSection) {
+        public static string Currents(string CurrentSection) {
             return (string) Current[CurrentSection];
         }
-        public static dynamic GetCurrent (this Microsoft.AspNetCore.Mvc.Controller controller) {
-            return Get (controller.ControllerContext.RouteData.Values["controller"].ToString ());
+        public static dynamic GetCurrent(this Microsoft.AspNetCore.Mvc.Controller controller) {
+            return Get(controller.ControllerContext.RouteData.Values["controller"].ToString());
         }
-        public static dynamic GetCurrent (string controller) {
-            return Get (controller);
+        public static dynamic GetCurrent(string controller) {
+            return Get(controller);
         }
         //public static string SetLanguage(string lang)
         //{

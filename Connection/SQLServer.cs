@@ -4,22 +4,18 @@ using System.Text;
 
 namespace TM.Core.Connection {
     public class SQLServer {
-        private string _connectionString = "MainConnection";
         public System.Data.SqlClient.SqlConnection Connection;
-        public SQLServer () {
-            Connection = new System.Data.SqlClient.SqlConnection (TM.Core.Helper.TMAppContext.configuration.GetSection ($"ConnectionStrings:{_connectionString}").Value);
-            Connection.Open ();
+        public SQLServer(string ConnectionString = "Maincontext") {
+            try {
+                Connection = new System.Data.SqlClient.SqlConnection(TM.Core.HttpContext.Current.configuration.GetSection($"ConnectionStrings:{ConnectionString}").Value);
+                Connection.Open();
+            } catch (System.Exception) { throw; }
         }
-        public SQLServer (string connectionString) {
-            _connectionString = connectionString;
-            Connection = new System.Data.SqlClient.SqlConnection (TM.Core.Helper.TMAppContext.configuration.GetSection ($"ConnectionStrings:{_connectionString}").Value);
-            Connection.Open ();
-        }
-        public void Close () {
+        public void Close() {
             try {
                 if (Connection != null && Connection.State == System.Data.ConnectionState.Open) {
-                    Connection.Close ();
-                    Connection.Dispose ();
+                    Connection.Close();
+                    Connection.Dispose();
                 }
             } catch (Exception) { throw; }
         }

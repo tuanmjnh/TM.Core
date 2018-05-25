@@ -16,18 +16,24 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
-      "Dapper.Contrib/1.50.4": {
+      "DapperExtensions.DotnetCore/1.0.1": {
         "type": "package",
         "dependencies": {
-          "Dapper": "1.50.4",
+          "Dapper": "1.50.2",
           "Microsoft.CSharp": "4.3.0",
-          "System.Reflection.Emit": "4.3.0"
+          "NETStandard.Library": "1.6.1",
+          "System.Collections": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Numerics": "4.3.0",
+          "System.Text.Encoding.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
         },
         "compile": {
-          "lib/netstandard2.0/Dapper.Contrib.dll": {}
+          "lib/netstandard1.6/DapperExtensions.DotnetCore.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Dapper.Contrib.dll": {}
+          "lib/netstandard1.6/DapperExtensions.DotnetCore.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.4": {
@@ -2663,6 +2669,24 @@
           }
         }
       },
+      "Microsoft.Win32.SystemEvents/4.5.0-rc1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp2.0/Microsoft.Win32.SystemEvents.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "NETStandard.Library/2.0.1": {
         "type": "package",
         "dependencies": {
@@ -2935,6 +2959,18 @@
             "assetType": "native",
             "rid": "win-x86"
           }
+        }
+      },
+      "SharpZipLib/1.0.0-alpha2": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/ICSharpCode.SharpZipLib.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/ICSharpCode.SharpZipLib.dll": {}
         }
       },
       "System.AppContext/4.3.0": {
@@ -3289,6 +3325,29 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
+        }
+      },
+      "System.Drawing.Common/4.5.0-rc1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0",
+          "Microsoft.Win32.SystemEvents": "4.5.0-rc1"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Drawing.Common.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Drawing.Common.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -4585,19 +4644,16 @@
         "lib/netstandard2.0/Dapper.xml"
       ]
     },
-    "Dapper.Contrib/1.50.4": {
-      "sha512": "2RBJJgOMzyZuD4LdcfrqGGZ005IppwOwo0JFlntZ0S0J/d69I6ehiYwiL4SyLE6mTBrB17uUZPIM67KO3GFEpw==",
+    "DapperExtensions.DotnetCore/1.0.1": {
+      "sha512": "owabAX9m4fPaOFea8lFRmhrVQIfRjzE2q26urfLroRdrTkn52yiUXHtJXqOeFHlcwwvb/Y1akEVDtVNBLNO0Pg==",
       "type": "package",
-      "path": "dapper.contrib/1.50.4",
+      "path": "dapperextensions.dotnetcore/1.0.1",
       "files": [
-        "dapper.contrib.1.50.4.nupkg.sha512",
-        "dapper.contrib.nuspec",
-        "lib/net451/Dapper.Contrib.dll",
-        "lib/net451/Dapper.Contrib.xml",
-        "lib/netstandard1.3/Dapper.Contrib.dll",
-        "lib/netstandard1.3/Dapper.Contrib.xml",
-        "lib/netstandard2.0/Dapper.Contrib.dll",
-        "lib/netstandard2.0/Dapper.Contrib.xml"
+        "dapperextensions.dotnetcore.1.0.1.nupkg.sha512",
+        "dapperextensions.dotnetcore.nuspec",
+        "lib/net45/DapperExtensions.DotnetCore.dll",
+        "lib/net461/DapperExtensions.DotnetCore.dll",
+        "lib/netstandard1.6/DapperExtensions.DotnetCore.dll"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.4": {
@@ -6887,6 +6943,25 @@
         "version.txt"
       ]
     },
+    "Microsoft.Win32.SystemEvents/4.5.0-rc1": {
+      "sha512": "BtWdrDgn1cnGAVg07H39HQCYMM73vGB+oD4YG1ZfogVb31WLRfUCSpmuaGEIFQ3KiKe7n6Mehh5N3gcnuxYv6Q==",
+      "type": "package",
+      "path": "microsoft.win32.systemevents/4.5.0-rc1",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Win32.SystemEvents.dll",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll",
+        "microsoft.win32.systemevents.4.5.0-rc1.nupkg.sha512",
+        "microsoft.win32.systemevents.nuspec",
+        "ref/net461/Microsoft.Win32.SystemEvents.dll",
+        "ref/netstandard2.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/netcoreapp2.0/Microsoft.Win32.SystemEvents.dll",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "NETStandard.Library/2.0.1": {
       "sha512": "oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
       "type": "package",
@@ -7333,6 +7408,17 @@
         "runtimes/win-x86/native/sni.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "SharpZipLib/1.0.0-alpha2": {
+      "sha512": "ndshrRoIzWdvoHr5ncGvSp3p/At+H2l4nT4bfWgPB0VU39TOT5/6uS6XbkO9N95Y8quO5RgLMiEBO3M0nq4pXw==",
+      "type": "package",
+      "path": "sharpziplib/1.0.0-alpha2",
+      "files": [
+        "lib/netstandard1.3/ICSharpCode.SharpZipLib.dll",
+        "lib/netstandard1.3/ICSharpCode.SharpZipLib.xml",
+        "sharpziplib.1.0.0-alpha2.nupkg.sha512",
+        "sharpziplib.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -8280,6 +8366,38 @@
         "ref/xamarinwatchos10/_._",
         "system.diagnostics.tracing.4.3.0.nupkg.sha512",
         "system.diagnostics.tracing.nuspec"
+      ]
+    },
+    "System.Drawing.Common/4.5.0-rc1": {
+      "sha512": "G7UU+j2Le7+LomBKCs8tYU8UHo2FKFcsiet92YhtK9/nU0tArYHQGvMSpWG+xZD/lvCX/dPgc3M6D4SnJifnFg==",
+      "type": "package",
+      "path": "system.drawing.common/4.5.0-rc1",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.Drawing.Common.dll",
+        "lib/netstandard2.0/System.Drawing.Common.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.Drawing.Common.dll",
+        "ref/netstandard2.0/System.Drawing.Common.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll",
+        "system.drawing.common.4.5.0-rc1.nupkg.sha512",
+        "system.drawing.common.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Dynamic.Runtime/4.3.0": {
@@ -11799,13 +11917,15 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Dapper >= 1.50.4",
-      "Dapper.Contrib >= 1.50.4",
+      "DapperExtensions.DotnetCore >= 1.0.1",
       "Microsoft.AspNetCore.App >= 2.1.0-preview2-final",
       "Microsoft.AspNetCore.Http.Extensions >= 2.1.0-preview2-final",
       "Microsoft.AspNetCore.Mvc >= 2.1.0-preview2-final",
       "Microsoft.AspNetCore.Session >= 2.1.0-preview2-final",
       "Microsoft.NETCore.App >= 2.1.0-preview2-26406-04",
       "Oracle.ManagedDataAccess.Core >= 2.12.0-beta2",
+      "SharpZipLib >= 1.0.0-alpha2",
+      "System.Drawing.Common >= 4.5.0-rc1",
       "System.IO.FileSystem.AccessControl >= 4.5.0-rc1"
     ]
   },
@@ -11854,9 +11974,9 @@
             "target": "Package",
             "version": "[1.50.4, )"
           },
-          "Dapper.Contrib": {
+          "DapperExtensions.DotnetCore": {
             "target": "Package",
-            "version": "[1.50.4, )"
+            "version": "[1.0.1, )"
           },
           "Microsoft.AspNetCore.App": {
             "target": "Package",
@@ -11883,6 +12003,14 @@
           "Oracle.ManagedDataAccess.Core": {
             "target": "Package",
             "version": "[2.12.0-beta2, )"
+          },
+          "SharpZipLib": {
+            "target": "Package",
+            "version": "[1.0.0-alpha2, )"
+          },
+          "System.Drawing.Common": {
+            "target": "Package",
+            "version": "[4.5.0-rc1, )"
           },
           "System.IO.FileSystem.AccessControl": {
             "target": "Package",

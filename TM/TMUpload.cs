@@ -10,7 +10,7 @@ namespace TM.Core.Helper {
         string[] Extension;
         bool Rename = true;
         int MaxFileCount = 5;
-        System.Collections.Generic.List<string> Error;
+        System.Collections.Generic.List<string> Error = new System.Collections.Generic.List<string>();
         public Upload(Microsoft.AspNetCore.Http.IFormFileCollection files, string uploadDir, string[] Extension, bool Rename = true, int MaxFileCount = 5) {
             this.files = files;
             this.uploadDir = uploadDir.Trim('\\');
@@ -49,8 +49,8 @@ namespace TM.Core.Helper {
                 this.Error.Add("null");
 
             //Create Directory Upload
-            var UploadsDir = TM.Core.Helper.IO.MapPath(uploadDir);
-            TM.Core.Helper.IO.CreateDirectory(UploadsDir, false);
+            var UploadsDir = TM.Core.IO.MapPath(uploadDir);
+            TM.Core.IO.CreateDirectory(UploadsDir, false);
             //Upload File
             long size = 0;
             for (int i = 0; i < files.Count; i++) {
@@ -89,8 +89,8 @@ namespace TM.Core.Helper {
             var rs = new System.Collections.Generic.Dictionary<long, string>();
             if (files.Count > 0) {
                 //Create Directory Upload
-                var UploadsDir = TM.Core.Helper.IO.MapPath(uploadDir);
-                TM.Core.Helper.IO.CreateDirectory(UploadsDir, false);
+                var UploadsDir = TM.Core.IO.MapPath(uploadDir);
+                TM.Core.IO.CreateDirectory(UploadsDir, false);
                 //Upload File
                 long size = 0;
                 for (int i = 0; i < files.Count; i++) {

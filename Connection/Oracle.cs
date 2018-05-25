@@ -5,14 +5,16 @@ using Oracle.ManagedDataAccess.Client;
 namespace TM.Core.Connection {
     public class Oracle {
         public OracleConnection Connection;
-        public Oracle (string ConnectionString = "HNIVNPTBACKAN1") {
-            Connection = new OracleConnection (TM.Core.Helper.TMAppContext.configuration.GetSection ($"ConnectionStrings:{ConnectionString}").Value);
-            Connection.Open ();
+        public Oracle(string ConnectionString = "HNIVNPTBACKAN1") {
+            try {
+                Connection = new OracleConnection(TM.Core.HttpContext.Current.configuration.GetSection($"ConnectionStrings:{ConnectionString}").Value);
+                Connection.Open();
+            } catch (System.Exception) { throw; }
         }
-        public void Close () {
+        public void Close() {
             try {
                 if (Connection != null && Connection.State == System.Data.ConnectionState.Open)
-                    Connection.Close ();
+                    Connection.Close();
             } catch (Exception) { throw; }
         }
     }

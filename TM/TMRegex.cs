@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TM.Core.RE {
+namespace TM.Core.Regex {
     public static class RegEx {
         public static bool isEmpty (string s) {
             if (s == string.Empty) return true;

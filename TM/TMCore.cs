@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace TM.Core.Helper {
+namespace TM.Core.HttpContext {
     //HttpContext
-    public static class TMAppContext {
+    public static class Current {
         static IServiceProvider services = null;
 
         /// <summary>
@@ -13,9 +13,8 @@ namespace TM.Core.Helper {
         public static IServiceProvider Services {
             get { return services; }
             set {
-                if (services != null) {
+                if (services != null)
                     throw new Exception("Can't set once a value has already been set.");
-                }
                 services = value;
             }
         }
@@ -68,17 +67,6 @@ namespace TM.Core.Helper {
             }
         }
     }
-    //Session Extensions
-    public static class SessionExtensions {
-        public static void Set<T>(this Microsoft.AspNetCore.Http.ISession session, string key, T value) {
-            session.SetString(key, Newtonsoft.Json.JsonConvert.SerializeObject(value));
-        }
-
-        public static T Get<T>(this Microsoft.AspNetCore.Http.ISession session, string key) {
-            var value = session.GetString(key);
-            return value == null ? default(T) : Newtonsoft.Json.JsonConvert.DeserializeObject<T>(value);
-        }
-    }
     //Export to AnonymousData
     public static class AnonymousData {
         public static System.Dynamic.ExpandoObject ToExpando(this object anonymousObject) {
@@ -88,20 +76,12 @@ namespace TM.Core.Helper {
                 expando.Add(item);
             return (System.Dynamic.ExpandoObject) expando;
         }
-    }
-    //Message
-    public static class Message {
-        public static void success(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
-            controller.TempData["MsgSuccess"] = message;
-        }
-        public static void info(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
-            controller.TempData["MsgInfo"] = message;
-        }
-        public static void warning(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
-            controller.TempData["MsgWarning"] = message;
-        }
-        public static void danger(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
-            controller.TempData["MsgDanger"] = message;
+        public static dynamic ToExpandoObject(this object value) {
+            System.Collections.Generic.IDictionary<string, object> dapperRowProperties = value as System.Collections.Generic.IDictionary<string, object>;
+            System.Collections.Generic.IDictionary<string, object> expando = new System.Dynamic.ExpandoObject();
+            foreach (System.Collections.Generic.KeyValuePair<string, object> property in dapperRowProperties)
+                expando.Add(property.Key, property.Value);
+            return expando as System.Dynamic.ExpandoObject;
         }
     }
 }

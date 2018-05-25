@@ -67,7 +67,7 @@ namespace TM.Core.Helper.TMString {
                 int t = 0;
                 if (str != string.Empty)
                     for (int i = 0; i < str.Length; i++)
-                        t += RE.RegEx.isNumber (str.Substring (i, 1)) ? Convert.ToInt32 (str.Substring (i, 1)) : 0;
+                        t += Regex.RegEx.isNumber (str.Substring (i, 1)) ? Convert.ToInt32 (str.Substring (i, 1)) : 0;
                 return t;
             } catch (Exception) { throw; }
         }

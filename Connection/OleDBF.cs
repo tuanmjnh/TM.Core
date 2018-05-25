@@ -1,6 +1,6 @@
 namespace TM.Core.Connection {
     public class OleDBF {
-        private string _dataSource = "MainContext";
+        //private string _dataSource = "MainContext";
         //public OleDbConnection Connection;
         public static string GetConnectionString (string DataSource, string version = "VFPOLEDB") {
             if (version == "dBASE" || version == "1")
