@@ -1,31 +1,31 @@
 ﻿using System.Linq;
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     public class Url {
         private static readonly string ContinueUrl = "continue";
         public static string BaseUrl {
             get {
                 var rs = string.Format("{0}://{1}",
-                    TM.Core.HttpContext.Current.Http.Request.Scheme,
-                    TM.Core.HttpContext.Current.Http.Request.Host);
+                    TM.Core.HttpContext.Http.Request.Scheme,
+                    TM.Core.HttpContext.Http.Request.Host);
                 return rs;
             }
         }
         public static string BasePath {
             get {
                 var rs = string.Format("{0}://{1}{2}",
-                    TM.Core.HttpContext.Current.Http.Request.Scheme,
-                    TM.Core.HttpContext.Current.Http.Request.Host,
-                    TM.Core.HttpContext.Current.Http.Request.Path);
+                    TM.Core.HttpContext.Http.Request.Scheme,
+                    TM.Core.HttpContext.Http.Request.Host,
+                    TM.Core.HttpContext.Http.Request.Path);
                 return rs;
             }
         }
         public static string Current {
             get {
                 var rs = string.Format("{0}://{1}{2}{3}",
-                    TM.Core.HttpContext.Current.Http.Request.Scheme,
-                    TM.Core.HttpContext.Current.Http.Request.Host,
-                    TM.Core.HttpContext.Current.Http.Request.Path,
-                    TM.Core.HttpContext.Current.Http.Request.QueryString);
+                    TM.Core.HttpContext.Http.Request.Scheme,
+                    TM.Core.HttpContext.Http.Request.Host,
+                    TM.Core.HttpContext.Http.Request.Path,
+                    TM.Core.HttpContext.Http.Request.QueryString);
                 return rs;
             }
         }
@@ -42,7 +42,7 @@ namespace TM.Core.Helper {
             if (ajaxRequest)
                 rs = url != null ? $"{rs}/{url.Replace("?continue=", "")}" : rs;
             else
-                rs = TM.Core.HttpContext.Current.Http.Request.Query.ContainsKey(ContinueUrl) ? BaseUrl + "/" + TM.Core.HttpContext.Current.Http.Request.Query.Where(d => d.Key == ContinueUrl).FirstOrDefault().Value : BaseUrl;
+                rs = TM.Core.HttpContext.Http.Request.Query.ContainsKey(ContinueUrl) ? BaseUrl + "/" + TM.Core.HttpContext.Http.Request.Query.Where(d => d.Key == ContinueUrl).FirstOrDefault().Value : BaseUrl;
             return rs;
             // var a = TM.Core.HttpContext.Current.Http.Request.Query.ContainsKey(ContinueUrl);
             // if (a) {

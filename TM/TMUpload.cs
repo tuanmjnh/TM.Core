@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Net.Http.Headers;
 
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     public class Upload {
         //Declares
         Microsoft.AspNetCore.Http.IFormFileCollection files;

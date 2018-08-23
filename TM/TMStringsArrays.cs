@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TM.Core.Helper.TMString {
+namespace TM.Core.Helpers.TMString {
     public static class Strings {
         public static string TMReplaceArray (string str, string reg, string val) {
             for (int i = 0; i < str.Length; i++)

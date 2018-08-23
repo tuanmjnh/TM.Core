@@ -6,7 +6,7 @@ using System.Linq;
 namespace TM.Core {
     public class IO {
         public static string MapPath(string path) {
-            return $@"{TM.Core.HttpContext.Current.WebRootPath}\{path}";
+            return $@"{TM.Core.HttpContext.WebRootPath}\{path}";
         }
         public static bool SetAccessRule(string directory, bool IsMapPath = true) {
             var Rights = (System.Security.AccessControl.FileSystemRights) 0;

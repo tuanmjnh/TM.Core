@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace TM.Core.HttpContext {
+namespace TM.Core {
     //HttpContext
-    public static class Current {
+    public static class HttpContext {
         static IServiceProvider services = null;
 
         /// <summary>
@@ -59,57 +59,23 @@ namespace TM.Core.HttpContext {
                 return Action.RouteData.Values["action"].ToString();
             }
         }
+        public static string baseUrl {
+            get {
+                return $"{Http.Request.Scheme}://{Http.Request.Host}{Http.Request.PathBase}";
+            }
+        }
+        public static string Header(string value = "Author", string defaultValues = "Admin") {
+            try {
+                var rs = Http.Request.Headers[value].ToString();
+                return string.IsNullOrEmpty(rs) ? defaultValues : rs;
+            } catch { throw; }
+        }
         //AppSettings
         public static IConfiguration configuration {
             get {
                 var configuration = services.GetService(typeof(IConfiguration)) as IConfiguration;
                 return configuration;
             }
-        }
-    }
-    //Export to AnonymousData
-    public static class AnonymousData {
-        public static System.Dynamic.ExpandoObject ToExpando(this object anonymousObject) {
-            System.Collections.Generic.IDictionary<string, object> anonymousDictionary = Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.AnonymousObjectToHtmlAttributes(anonymousObject);
-            System.Collections.Generic.IDictionary<string, object> expando = new System.Dynamic.ExpandoObject();
-            foreach (var item in anonymousDictionary)
-                expando.Add(item);
-            return (System.Dynamic.ExpandoObject) expando;
-        }
-        public static dynamic ToExpandoObject(this object value) {
-            System.Collections.Generic.IDictionary<string, object> dapperRowProperties = value as System.Collections.Generic.IDictionary<string, object>;
-            System.Collections.Generic.IDictionary<string, object> expando = new System.Dynamic.ExpandoObject();
-            foreach (System.Collections.Generic.KeyValuePair<string, object> property in dapperRowProperties)
-                expando.Add(property.Key, property.Value);
-            return expando as System.Dynamic.ExpandoObject;
-        }
-    }
-}
-namespace TM.Core.Helper.Extensions {
-    //Extensions
-    public static class Extension {
-        /// <summary>
-        /// Extension method to add pagination info to Response headers
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="currentPage"></param>
-        /// <param name="itemsPerPage"></param>
-        /// <param name="totalItems"></param>
-        /// <param name="totalPages"></param>
-        //public static void AddPagination(this HttpResponse response, int currentPage, int itemsPerPage, int totalItems, int totalPages)
-        //{
-        //    var paginationHeader = new PaginationHeader(currentPage, itemsPerPage, totalItems, totalPages);
-
-        //    response.Headers.Add("Pagination",
-        //       Newtonsoft.Json.JsonConvert.SerializeObject(paginationHeader));
-        //    // CORS
-        //    response.Headers.Add("access-control-expose-headers", "Pagination");
-        //}
-
-        public static void AddApplicationError(this HttpResponse response, string message) {
-            response.Headers.Add("Application-Error", message);
-            // CORS
-            response.Headers.Add("access-control-expose-headers", "Application-Error");
         }
     }
 }

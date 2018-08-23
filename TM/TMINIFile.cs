@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     public class INIFile {
         string Path;
         //string EXE = Assembly.GetExecutingAssembly().GetName().Name;

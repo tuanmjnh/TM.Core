@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.Core.Helper
+namespace TM.Core.Helpers
 {
     //Convert TCVN3 Unicode
    public static class ConvertCharacter

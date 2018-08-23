@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     public static class Data {
         public static DataTable ToDataTable2<T>(this List<T> iList) {
             var dataTable = new DataTable();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
-using TM.Core.Helper;
+using TM.Core.Helpers;
 
 namespace Dapper.TMOracle
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     public static class Language {
         //private static string AppLanguage = "AppLanguage";
         public static string CurrentLang { get; set; }
@@ -58,7 +58,7 @@ namespace TM.Core.Helper {
         }
         public static dynamic Current {
             get {
-                return Get(TM.Core.HttpContext.Current.Action.RouteData.Values["controller"].ToString());
+                return Get(TM.Core.HttpContext.Action.RouteData.Values["controller"].ToString());
             }
         }
         public static string Currents(string CurrentSection) {

@@ -1,5 +1,5 @@
 using System;
-namespace TM.Core.Helper {
+namespace TM.Core.Helpers {
     //Message
     public static class Message {
         public static void success(this Microsoft.AspNetCore.Mvc.Controller controller, string message) {
