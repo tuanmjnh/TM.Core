@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "060c7cdeea851991d6a9ef49cd28397e9ba9da82"
+    "signature": "d20380c1fec8afce73b31ead12610e26ae425bb4"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,7 +9,6 @@
       "TM.Core/1.0.0": {
         "dependencies": {
           "Dapper": "1.50.4",
-          "DapperExtensions.DotnetCore": "1.0.1",
           "Microsoft.NETCore.App": "2.1.0",
           "Oracle.ManagedDataAccess.Core": "2.12.0-beta3",
           "SharpZipLib": "1.0.0",
@@ -28,18 +27,6 @@
           "lib/netstandard2.0/Dapper.dll": {
             "assemblyVersion": "1.50.4.0",
             "fileVersion": "1.50.4.0"
-          }
-        }
-      },
-      "DapperExtensions.DotnetCore/1.0.1": {
-        "dependencies": {
-          "Dapper": "1.50.4",
-          "NETStandard.Library": "2.0.3"
-        },
-        "runtime": {
-          "lib/netstandard1.6/DapperExtensions.DotnetCore.dll": {
-            "assemblyVersion": "1.0.1.0",
-            "fileVersion": "1.0.1.0"
           }
         }
       },
@@ -153,13 +140,6 @@
       "sha512": "sha512-t5DMz+1aEkBcyCgkj+6hJHNsUq3k/d67lVMTNzICEhVjPUI3Gt2kgotSK8S4SpziIbFPphnOEn8M6Q75ED5hRQ==",
       "path": "dapper/1.50.4",
       "hashPath": "dapper.1.50.4.nupkg.sha512"
-    },
-    "DapperExtensions.DotnetCore/1.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-owabAX9m4fPaOFea8lFRmhrVQIfRjzE2q26urfLroRdrTkn52yiUXHtJXqOeFHlcwwvb/Y1akEVDtVNBLNO0Pg==",
-      "path": "dapperextensions.dotnetcore/1.0.1",
-      "hashPath": "dapperextensions.dotnetcore.1.0.1.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.1.0": {
       "type": "package",

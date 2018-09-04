@@ -5,7 +5,7 @@ using Oracle.ManagedDataAccess.Client;
 namespace TM.Core.Connection {
     public class Oracle {
         public OracleConnection Connection;
-        public Oracle(string ConnectionString = "HNIVNPTBACKAN1") {
+        public Oracle(string ConnectionString = "VNPTBK") {
             try {
                 Connection = new OracleConnection(TM.Core.HttpContext.configuration.GetSection($"ConnectionStrings:{ConnectionString}").Value);
                 Connection.Open();

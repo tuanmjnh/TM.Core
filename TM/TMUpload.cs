@@ -59,9 +59,9 @@ namespace TM.Core.Helpers {
                         break;
 
                 size = files[i].Length;
-                if (size < 1)continue;
+                if (size < 1) continue;
                 var filename = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.ToString().Trim('"');
-                if (Rename)filename = (Guid.NewGuid().ToString("N")+ filename.ToExtension()).ToLower();
+                if (Rename) filename = Guid.NewGuid().ToString("N") + Path.GetExtension(filename).ToLower();
                 rs.Add(size, filename);
 
                 if (Extension != null)
@@ -99,9 +99,9 @@ namespace TM.Core.Helpers {
                             break;
 
                     size = files[i].Length;
-                    if (size < 1)continue;
+                    if (size < 1) continue;
                     var filename = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.ToString().Trim('"');
-                    if (Rename)filename = (Guid.NewGuid().ToString("N")+ filename.ToExtension()).ToLower();
+                    if (Rename) filename = (Guid.NewGuid().ToString("N") + Path.GetExtension(filename)).ToLower();
 
                     if (Extension != null)
                         if (!filename.IsExtension(Extension)) {

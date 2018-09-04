@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 
 namespace TM.Core {
-    public class IO {
+    public static class IO {
         public static string MapPath(string path) {
             return $@"{TM.Core.HttpContext.WebRootPath}\{path}";
         }
@@ -221,7 +221,55 @@ namespace TM.Core {
             //return rs;
             return System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders().Select(codec => codec.FilenameExtension).ToList();
         }
+        public static bool IsExtension(this string file, string Extension) {
+            try {
+                if (Path.GetExtension(file).ToLower() == (Extension[0].ToString() == "." ? Extension.ToLower() : "." + Extension.ToLower()))
+                    return true;
+                else return false;
+            } catch (Exception) { throw; }
+        }
+        public static bool IsExtension(this string file, string[] Extension) {
+            if (Extension.Length > 0)
+                foreach (var item in Extension)
+                    if (IsExtension(file, item)) return true;
+            return false;
+        }
+        public static System.Collections.Generic.List<string> UploadFileSource(this System.Collections.Generic.Dictionary<string, object> Upload) {
+            try {
+                return (System.Collections.Generic.List<string>) Upload["UploadFileSource"];
+            } catch (Exception) {
+                return null;
+            }
 
+        }
+        public static string UploadFileSourceString(this System.Collections.Generic.Dictionary<string, object> Upload) {
+            try {
+                return (string) Upload["UploadFileSourceString"];
+            } catch (Exception) {
+                return null;
+            }
+        }
+        public static System.Collections.Generic.List<string> UploadFile(this System.Collections.Generic.Dictionary<string, object> Upload) {
+            try {
+                return (System.Collections.Generic.List<string>) Upload["UploadFile"];
+            } catch (Exception) {
+                return null;
+            }
+        }
+        public static string UploadFileString(this System.Collections.Generic.Dictionary<string, object> Upload) {
+            try {
+                return (string) Upload["UploadFileString"];
+            } catch (Exception) {
+                return null;
+            }
+        }
+        public static System.Collections.Generic.List<string> UploadError(this System.Collections.Generic.Dictionary<string, object> Upload) {
+            try {
+                return (System.Collections.Generic.List<string>) Upload["UploadError"];
+            } catch (Exception) {
+                return null;
+            }
+        }
     }
 
     public class Zip {
@@ -454,65 +502,6 @@ namespace TM.Core {
                 str = ex.Message;
             }
 
-        }
-    }
-}
-public static class IOS {
-    public static string ToExtension(this string file) {
-        try {
-            return Path.GetExtension(file);
-        } catch (Exception) { throw; }
-    }
-    public static string ToExtensionNone(this string file) {
-        return ToExtension(file).Trim('.');
-    }
-    public static bool IsExtension(this string file, string Extension) {
-        try {
-            if (file.ToExtension().ToLower() == (Extension[0].ToString() == "." ? Extension.ToLower() : "." + Extension.ToLower()))
-                return true;
-            else return false;
-        } catch (Exception) { throw; }
-    }
-    public static bool IsExtension(this string file, string[] Extension) {
-        if (Extension.Length > 0)
-            foreach (var item in Extension)
-                if (file.IsExtension(item)) return true;
-        return false;
-    }
-    public static System.Collections.Generic.List<string> UploadFileSource(this System.Collections.Generic.Dictionary<string, object> Upload) {
-        try {
-            return (System.Collections.Generic.List<string>) Upload["UploadFileSource"];
-        } catch (Exception) {
-            return null;
-        }
-
-    }
-    public static string UploadFileSourceString(this System.Collections.Generic.Dictionary<string, object> Upload) {
-        try {
-            return (string) Upload["UploadFileSourceString"];
-        } catch (Exception) {
-            return null;
-        }
-    }
-    public static System.Collections.Generic.List<string> UploadFile(this System.Collections.Generic.Dictionary<string, object> Upload) {
-        try {
-            return (System.Collections.Generic.List<string>) Upload["UploadFile"];
-        } catch (Exception) {
-            return null;
-        }
-    }
-    public static string UploadFileString(this System.Collections.Generic.Dictionary<string, object> Upload) {
-        try {
-            return (string) Upload["UploadFileString"];
-        } catch (Exception) {
-            return null;
-        }
-    }
-    public static System.Collections.Generic.List<string> UploadError(this System.Collections.Generic.Dictionary<string, object> Upload) {
-        try {
-            return (System.Collections.Generic.List<string>) Upload["UploadError"];
-        } catch (Exception) {
-            return null;
         }
     }
 }

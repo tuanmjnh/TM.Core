@@ -144,10 +144,10 @@ namespace Dapper.Contrib.Extensions {
         }
 
         /// <summary>
-        /// Returns a single entity by a single id from table "Ts".  
+        /// Returns a single entity by a single id from table "Ts".
         /// Id must be marked with [Key] attribute.
         /// Entities created from interfaces are tracked/intercepted for changes and used by the Update() extension
-        /// for optimal performance. 
+        /// for optimal performance.
         /// </summary>
         /// <typeparam name="T">Interface or type to create and populate</typeparam>
         /// <param name="connection">Open SqlConnection</param>
@@ -157,17 +157,21 @@ namespace Dapper.Contrib.Extensions {
         /// <returns>Entity of T</returns>
         public static T Get<T>(this IDbConnection connection, dynamic id, IDbTransaction transaction = null, int? commandTimeout = null) where T : class {
             var type = typeof(T);
+            var sql = "";
+            // if (!GetQueries.TryGetValue(type.TypeHandle, out string sql)) {
+            var key = GetSingleKey<T>(nameof(Get));
+            var name = GetTableName(type);
 
-            if (!GetQueries.TryGetValue(type.TypeHandle, out string sql)) {
-                var key = GetSingleKey<T>(nameof(Get));
-                var name = GetTableName(type);
-
-                sql = $"select * from {name} where {key.Name} = @id";
-                GetQueries[type.TypeHandle] = sql;
-            }
+            var adapter = GetFormatter(connection);
+            var sb = new StringBuilder(null);
+            sql = $"SELECT * FROM {name} WHERE {key.Name} = ";
+            // GetQueries[type.TypeHandle] = sql;
+            adapter.AppendParametr(sb, "id");
+            sql = sql + sb.ToString();
+            // }
 
             var dynParms = new DynamicParameters();
-            dynParms.Add("@id", id);
+            dynParms.Add(sb.ToString(), id);
 
             T obj;
 
@@ -192,10 +196,10 @@ namespace Dapper.Contrib.Extensions {
         }
 
         /// <summary>
-        /// Returns a list of entites from table "Ts".  
+        /// Returns a list of entites from table "Ts".
         /// Id of T must be marked with [Key] attribute.
         /// Entities created from interfaces are tracked/intercepted for changes and used by the Update() extension
-        /// for optimal performance. 
+        /// for optimal performance.
         /// </summary>
         /// <typeparam name="T">Interface or type to create and populate</typeparam>
         /// <param name="connection">Open SqlConnection</param>
@@ -231,10 +235,10 @@ namespace Dapper.Contrib.Extensions {
         }
 
         /// <summary>
-        /// Returns a list of entites from table "Ts" by a single id .  
+        /// Returns a list of entites from table "Ts" by a single id .
         /// Id of T must be marked with [Key] attribute.
         /// Entities created from interfaces are tracked/intercepted for changes and used by the Update() extension
-        /// for optimal performance. 
+        /// for optimal performance.
         /// </summary>
         /// <typeparam name="T">Interface or type to create and populate</typeparam>
         /// <param name="connection">Open SqlConnection</param>
@@ -291,7 +295,7 @@ namespace Dapper.Contrib.Extensions {
             if (TableNameMapper != null) {
                 name = TableNameMapper(type);
             } else {
-                //NOTE: This as dynamic trick should be able to handle both our own Table-attribute as well as the one in EntityFramework 
+                //NOTE: This as dynamic trick should be able to handle both our own Table-attribute as well as the one in EntityFramework
                 var tableAttr = type
 #if NETSTANDARD1_3
                     .GetTypeInfo()
@@ -668,7 +672,7 @@ namespace Dapper.Contrib.Extensions {
             }
 
             private static void CreateProperty<T>(TypeBuilder typeBuilder, string propertyName, Type propType, MethodInfo setIsDirtyMethod, bool isIdentity) {
-                //Define the field and the property 
+                //Define the field and the property
                 var field = typeBuilder.DefineField("_" + propertyName, propType, FieldAttributes.Private);
                 var property = typeBuilder.DefineProperty(propertyName,
                     System.Reflection.PropertyAttributes.None,
