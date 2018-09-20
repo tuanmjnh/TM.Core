@@ -11743,11 +11743,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Applications\\TM.Core\\TM.Core.csproj",
+      "projectUniqueName": "d:\\Applications\\TM.Core\\TM.Core.csproj",
       "projectName": "TM.Core",
-      "projectPath": "D:\\Applications\\TM.Core\\TM.Core.csproj",
+      "projectPath": "d:\\Applications\\TM.Core\\TM.Core.csproj",
       "packagesPath": "C:\\Users\\TM\\.nuget\\packages\\",
-      "outputPath": "D:\\Applications\\TM.Core\\obj\\",
+      "outputPath": "d:\\Applications\\TM.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
