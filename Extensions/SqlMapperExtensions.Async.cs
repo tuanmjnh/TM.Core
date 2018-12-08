@@ -115,7 +115,7 @@ namespace Dapper.Contrib.Extensions {
             var cacheType = typeof(List<T>);
 
             if (!GetQueries.TryGetValue(cacheType.TypeHandle, out string sql)) {
-                GetSingleKey<T>(nameof(GetAll));
+                var key = GetSingleKey<T>(nameof(GetAllAsync));
                 var name = GetTableName(type);
 
                 sql = "SELECT * FROM " + name;
