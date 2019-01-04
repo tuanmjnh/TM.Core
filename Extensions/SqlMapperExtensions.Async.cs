@@ -611,18 +611,20 @@ public partial class OracleAdapter {
     public async Task<int> InsertAsync(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, string tableName, string columnList, string parameterList, IEnumerable<PropertyInfo> keyProperties, object entityToInsert) {
         var cmd = $"insert into {tableName} ({columnList}) values ({parameterList})";
         await connection.ExecuteAsync(cmd, entityToInsert, transaction, commandTimeout).ConfigureAwait(false);
-
         var propertyInfos = keyProperties as PropertyInfo[] ?? keyProperties.ToArray();
-        var keyName = propertyInfos[0].Name;
-        var r = connection.Query($"SELECT {keyName} ID FROM {tableName} WHERE rowid = (SELECT max(rowid) from {tableName} )", transaction : transaction, commandTimeout : commandTimeout);
+        if (propertyInfos[0].PropertyType.Name != "String") {
+            var keyName = propertyInfos[0].Name;
+            var r = connection.Query($"SELECT {keyName} ID FROM {tableName} WHERE rowid = (SELECT max(rowid) from {tableName} )", transaction : transaction, commandTimeout : commandTimeout);
 
-        var id = r.First().ID;
-        if (id == null) return 0;
-        if (propertyInfos.Length == 0) return Convert.ToInt32(id);
+            var id = r.First().ID;
+            if (id == null) return 0;
+            if (propertyInfos.Length == 0) return Convert.ToInt32(id);
 
-        var idp = propertyInfos[0];
-        idp.SetValue(entityToInsert, Convert.ChangeType(id, idp.PropertyType), null);
+            var idp = propertyInfos[0];
+            idp.SetValue(entityToInsert, Convert.ChangeType(id, idp.PropertyType), null);
 
-        return Convert.ToInt32(id);
+            return Convert.ToInt32(id);
+        }
+        return 0;
     }
 }
