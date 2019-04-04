@@ -22,7 +22,7 @@ namespace Dapper.Contrib.Extensions {
             if (wasClosed) connection.Open();
             int returnVal = 0;
             //
-            var entityToInsert = new List<ICollection<KeyValuePair<string, Object>> > ();
+            var entityToInsert = new List<ICollection<KeyValuePair<string, Object>>>();
             var _entityToInsert = new List<System.Dynamic.ExpandoObject>();
             if (dynamicToInsert is Array)
                 isList = true;
@@ -134,6 +134,10 @@ namespace Dapper.Contrib.Extensions {
         }
         public static string ParseDateTime(this string datetime) {
             var rs = $"TO_DATE('{DateTime.Parse(datetime).ToString("yyyy/MM/dd hh:mm:ss")}', 'YYYY/MM/DD HH24:mi:ss')";
+            return rs;
+        }
+        public static string ParseDateTime(this DateTime datetime) {
+            var rs = $"TO_DATE('{datetime.ToString("yyyy/MM/dd hh:mm:ss")}', 'YYYY/MM/DD HH24:mi:ss')";
             return rs;
         }
     }
