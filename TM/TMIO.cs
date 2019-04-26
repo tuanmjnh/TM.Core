@@ -2,14 +2,18 @@
 //using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-namespace TM.Core {
-    public static class IO {
-        public static string MapPath(string path) {
+using TM.Core.Helpers.TMString;
+namespace TM.Core
+{
+    public static class IO
+    {
+        public static string MapPath(string path)
+        {
             return $@"{TM.Core.HttpContext.WebRootPath}\{path}";
         }
-        public static bool SetAccessRule(string directory, bool IsMapPath = true) {
-            var Rights = (System.Security.AccessControl.FileSystemRights) 0;
+        public static bool SetAccessRule(string directory, bool IsMapPath = true)
+        {
+            var Rights = (System.Security.AccessControl.FileSystemRights)0;
             Rights = System.Security.AccessControl.FileSystemRights.FullControl;
             // *** Add Access Rule to the actual directory itself
             var AccessRule = new System.Security.AccessControl.FileSystemAccessRule("Users", Rights,
@@ -40,97 +44,132 @@ namespace TM.Core {
             Info.SetAccessControl(Security);
             return true;
         }
-        public static bool Rename(string sourceFile, string DestFile, bool IsMapPath = true) {
-            try {
+        public static bool Rename(string sourceFile, string DestFile, bool IsMapPath = true)
+        {
+            try
+            {
                 sourceFile = IsMapPath ? MapPath(sourceFile) : sourceFile;
                 DestFile = IsMapPath ? MapPath(DestFile) : DestFile;
                 File.Move(sourceFile, DestFile);
                 return true;
-            } catch (Exception) { return false; }
+            }
+            catch (Exception) { return false; }
         }
-        public static FileInfo ReExtension(string sourceFile, string extension, bool IsMapPath = true) {
-            try {
+        public static FileInfo ReExtension(string sourceFile, string extension, bool IsMapPath = true)
+        {
+            try
+            {
                 sourceFile = IsMapPath ? MapPath(sourceFile) : sourceFile;
                 var file = new FileInfo(sourceFile);
                 var DestFile = sourceFile.Replace(file.Extension, extension);
                 File.Move(sourceFile, DestFile);
                 return new FileInfo(DestFile);
-            } catch (Exception) { return null; }
+            }
+            catch (Exception) { return null; }
         }
-        public static FileInfo ReExtensionToLower(string sourceFile, bool IsMapPath = true) {
-            try {
+        public static FileInfo ReExtensionToLower(string sourceFile, bool IsMapPath = true)
+        {
+            try
+            {
                 sourceFile = IsMapPath ? MapPath(sourceFile) : sourceFile;
                 var file = new FileInfo(sourceFile);
                 var DestFile = sourceFile.Replace(file.Extension, file.Extension.ToLower());
                 File.Move(sourceFile, DestFile);
                 return new FileInfo(DestFile);
-            } catch (Exception) { return null; }
+            }
+            catch (Exception) { return null; }
         }
-        public static bool Copy(string sourceFile, string DestFile, bool IsMapPath = true) {
-            try {
+        public static bool Copy(string sourceFile, string DestFile, bool IsMapPath = true)
+        {
+            try
+            {
                 sourceFile = IsMapPath ? MapPath(sourceFile) : sourceFile;
                 DestFile = IsMapPath ? MapPath(DestFile) : DestFile;
                 File.Copy(sourceFile, DestFile);
                 return true;
-            } catch (Exception) { return false; }
+            }
+            catch (Exception) { return false; }
         }
-        public static bool Copy(string sourceFile) {
+        public static bool Copy(string sourceFile)
+        {
             return Copy(sourceFile, CreateFileExist(sourceFile));
         }
-        public static bool Delete(string path, bool IsMapPath = true) {
-            try {
+        public static bool Delete(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
-                if (File.Exists(path)) {
+                if (File.Exists(path))
+                {
                     File.Delete(path);
                     return true;
-                } else return true;
-            } catch (Exception) { throw; }
+                }
+                else return true;
+            }
+            catch (Exception) { throw; }
         }
-        public static bool Delete(string path, string[] files, bool IsMapPath = true) {
-            try {
+        public static bool Delete(string path, string[] files, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
                 foreach (var item in files)
                     if (File.Exists(path + item))
                         File.Delete(path + item);
                 return true;
                 //else return false;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static bool Delete(string path, FileInfo[] files, bool IsMapPath = true) {
-            try {
+        public static bool Delete(string path, FileInfo[] files, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
                 foreach (var item in files)
                     if (File.Exists(path + item.Name))
                         File.Delete(path + item.Name);
                 return true;
                 //else return false;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static bool DeleteDirectory(string path, bool IsMapPath = true) {
-            try {
+        public static bool DeleteDirectory(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
-                if (Directory.Exists(path)) {
+                if (Directory.Exists(path))
+                {
                     foreach (var item in Files(path, false))
                         File.Delete(item.FullName);
                     Directory.Delete(path);
                     return true;
-                } else return false;
-            } catch (Exception) { throw; }
+                }
+                else return false;
+            }
+            catch (Exception) { throw; }
         }
-        public static bool CreateDirectory(string path, bool IsMapPath = true) {
-            try {
+        public static bool CreateDirectory(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
                 path = path.Trim('/', '\\');
-                if (!Directory.Exists(path)) {
+                if (!Directory.Exists(path))
+                {
                     Directory.CreateDirectory(path);
                     var directory = new DirectoryInfo(path);
                     return true;
                 }
                 return false;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static string CreateFileExist(string file, bool IsMapPath = true) {
-            try {
+        public static string CreateFileExist(string file, bool IsMapPath = true)
+        {
+            try
+            {
                 int countFile = 0;
                 file = IsMapPath ? MapPath(file) : file;
                 string extension = Path.GetExtension(MapPath(file));
@@ -138,33 +177,45 @@ namespace TM.Core {
                     countFile++;
                 file = file.Substring(0, file.Length - extension.Length) + (countFile > 0 ? "(" + countFile.ToString() + ")" : "") + extension;
                 return file;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static byte[] ReturnByteFile(string path, bool IsMapPath = true) {
-            try {
+        public static byte[] ReturnByteFile(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
                 byte[] fileBytes = File.ReadAllBytes(path);
                 return fileBytes;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static DirectoryInfo[] Directories(string path, bool IsMapPath = true) {
-            try {
+        public static DirectoryInfo[] Directories(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 path = IsMapPath ? MapPath(path) : path;
                 var Dir = new DirectoryInfo(path);
                 return Dir.GetDirectories();
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static System.Collections.Generic.List<string> DirectoriesToList(string path, bool IsMapPath = true) {
-            try {
+        public static System.Collections.Generic.List<string> DirectoriesToList(string path, bool IsMapPath = true)
+        {
+            try
+            {
                 var list = new System.Collections.Generic.List<string>();
                 var subDir = Directories(path, IsMapPath);
                 foreach (var item in subDir)
                     list.Add(item.Name);
                 return list;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static FileInfo[] Files(string path, string[] extension = null, bool IsMapPath = true) {
-            try {
+        public static FileInfo[] Files(string path, string[] extension = null, bool IsMapPath = true)
+        {
+            try
+            {
                 //var files = System.IO.Directory.GetDirectories(path);
                 //string[] ext = new[] { ".dbf" };
                 path = IsMapPath ? MapPath(path) : path;
@@ -174,110 +225,158 @@ namespace TM.Core {
                 else
                     return Dir.GetFiles();
                 //var subFiles = di.GetFiles("*.dbf").Concat(di.GetFiles("*.dbf2"));
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static FileInfo[] Files(string path, bool IsMapPath = true) {
+        public static FileInfo[] Files(string path, bool IsMapPath = true)
+        {
             return Files(path, null, IsMapPath);
         }
-        public static System.Collections.Generic.List<string> FilesToList(string path, string[] extension, bool IsMapPath = true) {
-            try {
+        public static System.Collections.Generic.List<string> FilesToList(string path, string[] extension, bool IsMapPath = true)
+        {
+            try
+            {
                 var list = new System.Collections.Generic.List<string>();
                 var subFiles = Files(path, extension, IsMapPath);
                 foreach (var item in subFiles)
                     list.Add(item.Name.Replace(item.Extension, item.Extension.ToLower()));
                 return list;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static System.Collections.Generic.List<string> FilesToList(string path, bool IsMapPath = true) {
+        public static System.Collections.Generic.List<string> FilesToList(string path, bool IsMapPath = true)
+        {
             return FilesToList(path, null, IsMapPath);
         }
-        public static string[] ReadFile(string filename) {
+        public static string ReadFileStream(this string path, string replace = "\"", bool IsMapPath = true)
+        {
+            path = IsMapPath ? MapPath(path) : path;
+            FileStream fileStream = new FileStream(path, FileMode.Open);
+            using (StreamReader reader = new StreamReader(fileStream))
+            {
+                return reader.ReadToEnd().Replace(replace, "");
+            }
+        }
+        public static string[] ReadFile(string path, bool IsMapPath = true)
+        {
 
-            var file = MapPath(filename);
-            var list = System.IO.File.ReadAllLines(file);
+            path = IsMapPath ? MapPath(path) : path;
+            var list = System.IO.File.ReadAllLines(path);
             return list;
         }
-        public static System.Collections.Generic.List<string[]> ReadFile(string filename, char split) {
+        public static System.Collections.Generic.List<string[]> ReadFile(string path, char split, bool IsMapPath = true)
+        {
             var rs = new System.Collections.Generic.List<string[]>();
-            foreach (var item in ReadFile(filename)) {
-                var tmp = item.Split(split);
+            foreach (var item in ReadFile(path, IsMapPath))
+            {
+                var tmp = item.Split(split).Replace("^\"|\"$");
                 rs.Add(tmp);
             }
             return rs;
         }
-        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path, string DestName) {
+        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path, string DestName)
+        {
             return new Microsoft.AspNetCore.Mvc.FileContentResult(ReturnByteFile(path), System.Net.Mime.MediaTypeNames.Application.Octet) { FileDownloadName = DestName };
         }
-        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path) {
+        public static Microsoft.AspNetCore.Mvc.FileContentResult FileContentResult(string path)
+        {
             path = path.Replace('\\', '/');
             string[] tmp = path.Trim('/').Split('/');
             string FileName = tmp[tmp.Length - 1];
             return FileContentResult(path, FileName);
         }
-        public static System.Collections.Generic.List<string> ImageCodecs() {
+        public static System.Collections.Generic.List<string> ImageCodecs()
+        {
             //var rs = new System.Collections.Generic.List<string>();
             //foreach (var item in System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders().Select(codec => codec.FilenameExtension).ToList())
             //    rs.Add(item.TrimStart('*'));
             //return rs;
             return System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders().Select(codec => codec.FilenameExtension).ToList();
         }
-        public static bool IsExtension(this string file, string Extension) {
-            try {
+        public static bool IsExtension(this string file, string Extension)
+        {
+            try
+            {
                 if (Path.GetExtension(file).ToLower() == (Extension[0].ToString() == "." ? Extension.ToLower() : "." + Extension.ToLower()))
                     return true;
                 else return false;
-            } catch (Exception) { throw; }
+            }
+            catch (Exception) { throw; }
         }
-        public static bool IsExtension(this string file, string[] Extension) {
+        public static bool IsExtension(this string file, string[] Extension)
+        {
             if (Extension.Length > 0)
                 foreach (var item in Extension)
                     if (IsExtension(file, item)) return true;
             return false;
         }
-        public static System.Collections.Generic.List<string> UploadFileSource(this System.Collections.Generic.Dictionary<string, object> Upload) {
-            try {
-                return (System.Collections.Generic.List<string>) Upload["UploadFileSource"];
-            } catch (Exception) {
+        public static System.Collections.Generic.List<string> UploadFileSource(this System.Collections.Generic.Dictionary<string, object> Upload)
+        {
+            try
+            {
+                return (System.Collections.Generic.List<string>)Upload["UploadFileSource"];
+            }
+            catch (Exception)
+            {
                 return null;
             }
 
         }
-        public static string UploadFileSourceString(this System.Collections.Generic.Dictionary<string, object> Upload) {
-            try {
-                return (string) Upload["UploadFileSourceString"];
-            } catch (Exception) {
+        public static string UploadFileSourceString(this System.Collections.Generic.Dictionary<string, object> Upload)
+        {
+            try
+            {
+                return (string)Upload["UploadFileSourceString"];
+            }
+            catch (Exception)
+            {
                 return null;
             }
         }
-        public static System.Collections.Generic.List<string> UploadFile(this System.Collections.Generic.Dictionary<string, object> Upload) {
-            try {
-                return (System.Collections.Generic.List<string>) Upload["UploadFile"];
-            } catch (Exception) {
+        public static System.Collections.Generic.List<string> UploadFile(this System.Collections.Generic.Dictionary<string, object> Upload)
+        {
+            try
+            {
+                return (System.Collections.Generic.List<string>)Upload["UploadFile"];
+            }
+            catch (Exception)
+            {
                 return null;
             }
         }
-        public static string UploadFileString(this System.Collections.Generic.Dictionary<string, object> Upload) {
-            try {
-                return (string) Upload["UploadFileString"];
-            } catch (Exception) {
+        public static string UploadFileString(this System.Collections.Generic.Dictionary<string, object> Upload)
+        {
+            try
+            {
+                return (string)Upload["UploadFileString"];
+            }
+            catch (Exception)
+            {
                 return null;
             }
         }
-        public static System.Collections.Generic.List<string> UploadError(this System.Collections.Generic.Dictionary<string, object> Upload) {
-            try {
-                return (System.Collections.Generic.List<string>) Upload["UploadError"];
-            } catch (Exception) {
+        public static System.Collections.Generic.List<string> UploadError(this System.Collections.Generic.Dictionary<string, object> Upload)
+        {
+            try
+            {
+                return (System.Collections.Generic.List<string>)Upload["UploadError"];
+            }
+            catch (Exception)
+            {
                 return null;
             }
         }
     }
 
-    public class Zip {
-        public static void CompressFolder(string path, ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream, int folderOffset) {
+    public class Zip
+    {
+        public static void CompressFolder(string path, ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream, int folderOffset)
+        {
 
             string[] files = Directory.GetFiles(path);
 
-            foreach (string filename in files) {
+            foreach (string filename in files)
+            {
 
                 FileInfo fi = new FileInfo(filename);
 
@@ -302,17 +401,20 @@ namespace TM.Core {
                 // Zip the file in buffered chunks
                 // the "using" will close the stream even if an exception occurs
                 byte[] buffer = new byte[4096];
-                using(FileStream streamReader = File.OpenRead(filename)) {
+                using (FileStream streamReader = File.OpenRead(filename))
+                {
                     ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(streamReader, zipStream, buffer);
                 }
                 zipStream.CloseEntry();
             }
             string[] folders = Directory.GetDirectories(path);
-            foreach (string folder in folders) {
+            foreach (string folder in folders)
+            {
                 CompressFolder(folder, zipStream, folderOffset);
             }
         }
-        public static void CreateSample(string outPathname, string password, string folderName) {
+        public static void CreateSample(string outPathname, string password, string folderName)
+        {
 
             FileStream fsOut = File.Create(outPathname);
             var zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(fsOut);
@@ -331,7 +433,8 @@ namespace TM.Core {
             zipStream.IsStreamOwner = true; // Makes the Close also Close the underlying stream
             zipStream.Close();
         }
-        public static MemoryStream CreateToMemoryStream(MemoryStream memStreamIn, string zipEntryName) {
+        public static MemoryStream CreateToMemoryStream(MemoryStream memStreamIn, string zipEntryName)
+        {
 
             MemoryStream outputMemStream = new MemoryStream();
             var zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(outputMemStream);
@@ -361,7 +464,8 @@ namespace TM.Core {
             //byte[] byteArrayOut = outputMemStream.GetBuffer();
             //long len = outputMemStream.Length;
         }
-        public static void ZipFile(System.Collections.Generic.List<string> filesToZip, string outFile, int compression = 3, bool IsMapPath = true) {
+        public static void ZipFile(System.Collections.Generic.List<string> filesToZip, string outFile, int compression = 3, bool IsMapPath = true)
+        {
             outFile = IsMapPath ? TM.Core.IO.MapPath(outFile) : outFile;
             if (compression < 0 || compression > 9)
                 throw new ArgumentException("Invalid compression rate (just 0-9).");
@@ -377,11 +481,13 @@ namespace TM.Core {
             var stream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(File.Create(outFile));
             stream.SetLevel(compression);
 
-            for (int i = 0; i < filesToZip.Count; i++) {
+            for (int i = 0; i < filesToZip.Count; i++)
+            {
                 var entry = new ICSharpCode.SharpZipLib.Zip.ZipEntry(Path.GetFileName(filesToZip[i]));
                 entry.DateTime = DateTime.Now;
                 var _filesToZip = IsMapPath ? TM.Core.IO.MapPath(filesToZip[i]) : filesToZip[i];
-                using(FileStream fs = File.OpenRead(_filesToZip)) {
+                using (FileStream fs = File.OpenRead(_filesToZip))
+                {
                     byte[] buffer = new byte[fs.Length];
                     fs.Read(buffer, 0, buffer.Length);
                     entry.Size = fs.Length;
@@ -437,20 +543,25 @@ namespace TM.Core {
         //     System.Web.HttpContext.Current.Response.Flush();
         //     System.Web.HttpContext.Current.Response.End();
         // }
-        public static MemoryStream CopyStream(Stream input) {
+        public static MemoryStream CopyStream(Stream input)
+        {
             var output = new MemoryStream();
             byte[] buffer = new byte[16 * 1024];
             int read;
-            while ((read = input.Read(buffer, 0, buffer.Length)) > 0) {
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
                 output.Write(buffer, 0, read);
             }
             return output;
         }
         //
-        public static byte[] Compress(byte[] data, string fileName) {
+        public static byte[] Compress(byte[] data, string fileName)
+        {
             // Compress
-            using(MemoryStream fsOut = new MemoryStream()) {
-                using(ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(fsOut)) {
+            using (MemoryStream fsOut = new MemoryStream())
+            {
+                using (ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(fsOut))
+                {
                     zipStream.SetLevel(3);
                     ICSharpCode.SharpZipLib.Zip.ZipEntry newEntry = new ICSharpCode.SharpZipLib.Zip.ZipEntry(fileName);
                     newEntry.DateTime = DateTime.UtcNow;
@@ -463,19 +574,23 @@ namespace TM.Core {
                 return fsOut.ToArray();
             }
         }
-        public static void Compress(Stream data, Stream outData, string fileName) {
+        public static void Compress(Stream data, Stream outData, string fileName)
+        {
             string str = "";
-            try {
-                using(ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(outData)) {
+            try
+            {
+                using (ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(outData))
+                {
                     zipStream.SetLevel(3);
                     ICSharpCode.SharpZipLib.Zip.ZipEntry newEntry = new ICSharpCode.SharpZipLib.Zip.ZipEntry(fileName);
                     newEntry.DateTime = DateTime.UtcNow;
                     zipStream.PutNextEntry(newEntry);
                     data.Position = 0;
-                    int size = (data.CanSeek) ? Math.Min((int) (data.Length - data.Position), 0x2000) : 0x2000;
+                    int size = (data.CanSeek) ? Math.Min((int)(data.Length - data.Position), 0x2000) : 0x2000;
                     byte[] buffer = new byte[size];
                     int n;
-                    do {
+                    do
+                    {
                         n = data.Read(buffer, 0, buffer.Length);
                         zipStream.Write(buffer, 0, n);
                     } while (n != 0);
@@ -483,22 +598,29 @@ namespace TM.Core {
                     zipStream.Flush();
                     zipStream.Close();
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 str = ex.Message;
             }
 
         }
-        public static void Compress2(Stream data, Stream outData, string fileName) {
+        public static void Compress2(Stream data, Stream outData, string fileName)
+        {
             string str = "";
-            try {
-                using(ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(outData)) {
+            try
+            {
+                using (ICSharpCode.SharpZipLib.Zip.ZipOutputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipOutputStream(outData))
+                {
                     zipStream.SetLevel(3);
                     ICSharpCode.SharpZipLib.Zip.ZipEntry newEntry = new ICSharpCode.SharpZipLib.Zip.ZipEntry(fileName);
                     newEntry.DateTime = DateTime.UtcNow;
                     zipStream.PutNextEntry(newEntry);
                     data.CopyTo(zipStream);
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 str = ex.Message;
             }
 
