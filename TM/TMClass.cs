@@ -1,8 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TM.Core.Helpers
 {
@@ -32,6 +30,12 @@ namespace TM.Core.Helpers
             foreach (var p in obj.GetType().GetProperties())
                 rs.Add(p.Name, p.GetValue(obj, null));
             return rs;
+        }
+        public static bool isList<T>(this T obj)
+        {
+            if (obj is IList && obj.GetType().IsGenericType)
+                return true;
+            return false;
         }
     }
 }
