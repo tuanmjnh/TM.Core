@@ -1,4 +1,5 @@
-﻿namespace TM.Core.Common
+﻿using System;
+namespace TM.Core.Common
 {
     public class Extensions
     {
@@ -80,6 +81,8 @@
         public int rowsPerPage { get; set; }
         public int flag { get; set; }
         public bool descending { get; set; }
+        public DateTime? start_at { get; set; }
+        public DateTime? end_at { get; set; }
         public string sortBy
         {
             get => _sortBy;

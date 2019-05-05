@@ -13,9 +13,12 @@ using Dapper;
 // #else
 // using System.Threading;
 // #endif
-namespace Dapper.Contrib.Extensions {
-    public static partial class SqlMapperExtensions {
-        public static long InsertDynamic(this IDbConnection connection, object dynamicToInsert, string tableName, string keyProperties = null, IDbTransaction transaction = null, int? commandTimeout = null) {
+namespace Dapper.Contrib.Extensions
+{
+    public static partial class SqlMapperExtensions
+    {
+        public static long InsertDynamic(this IDbConnection connection, object dynamicToInsert, string tableName, string keyProperties = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
             var isList = false;
             var adapter = GetFormatter(connection);
             var wasClosed = connection.State == ConnectionState.Closed;
@@ -26,26 +29,32 @@ namespace Dapper.Contrib.Extensions {
             var _entityToInsert = new List<System.Dynamic.ExpandoObject>();
             if (dynamicToInsert is Array)
                 isList = true;
-            else if (dynamicToInsert is List<System.Dynamic.ExpandoObject>) {
+            else if (dynamicToInsert is List<System.Dynamic.ExpandoObject>)
+            {
                 isList = true;
-                _entityToInsert = (List<System.Dynamic.ExpandoObject>) dynamicToInsert;
+                _entityToInsert = (List<System.Dynamic.ExpandoObject>)dynamicToInsert;
                 //
                 if (_entityToInsert.Count < 1) return -1;
                 //DapperRow
                 //
                 var index = 0;
-                foreach (var item in _entityToInsert) {
-                    entityToInsert.Add((ICollection<KeyValuePair<string, Object>>) item);
+                foreach (var item in _entityToInsert)
+                {
+                    entityToInsert.Add((ICollection<KeyValuePair<string, Object>>)item);
                     index++;
                     returnVal++;
                 }
-            } else if (dynamicToInsert is IEnumerable<dynamic>) {
+            }
+            else if (dynamicToInsert is IEnumerable<dynamic>)
+            {
                 //const string _BEGIN = "begin\n";
                 //const string _END = "\nend;";
                 //var qry = "";
-                foreach (var item in (IEnumerable<dynamic>) dynamicToInsert) {
+                foreach (var item in (IEnumerable<dynamic>)dynamicToInsert)
+                {
                     var x = new List<KeyValuePair<string, Object>>();
-                    foreach (KeyValuePair<string, object> property in item) {
+                    foreach (KeyValuePair<string, object> property in item)
+                    {
                         //if (property.Value == null) continue;
                         x.Add(new KeyValuePair<string, Object>(property.Key, property.Value));
                         //var x = property.Key;
@@ -61,8 +70,10 @@ namespace Dapper.Contrib.Extensions {
                 // }
                 // qry = $"{_BEGIN}{qry}{_END}";
                 // return returnVal;
-            } else {
-                entityToInsert.Add((ICollection<KeyValuePair<string, Object>>) dynamicToInsert);
+            }
+            else
+            {
+                entityToInsert.Add((ICollection<KeyValuePair<string, Object>>)dynamicToInsert);
                 returnVal++;
             }
             if (isList) { }
@@ -71,12 +82,14 @@ namespace Dapper.Contrib.Extensions {
             if (wasClosed) connection.Close();
             return returnVal;
         }
-        public static string getCmdInsert(ISqlAdapter adapter, ICollection<KeyValuePair<string, Object>> entityToInsert, string tableName, string keyProperties = null) {
+        public static string getCmdInsert(ISqlAdapter adapter, ICollection<KeyValuePair<string, Object>> entityToInsert, string tableName, string keyProperties = null)
+        {
             var sbColumnList = new StringBuilder(null);
             var sbParameterList = new StringBuilder(null);
             var index = 0;
-            foreach (var item in entityToInsert) {
-                var property = (KeyValuePair<string, object>) item;
+            foreach (var item in entityToInsert)
+            {
+                var property = (KeyValuePair<string, object>)item;
                 //
                 if (!string.IsNullOrEmpty(keyProperties) && property.Key.ToUpper() == keyProperties.ToUpper()) continue;
                 else index++;
@@ -92,14 +105,17 @@ namespace Dapper.Contrib.Extensions {
             var cmd = $"insert into {tableName} ({sbColumnList.ToString().Trim(',')}) values ({sbParameterList.ToString().Trim(',')})";
             return cmd;
         }
-        public static string GetClassName<T>(this T obj) {
+        public static string GetClassName<T>(this T obj)
+        {
             return obj.GetType().Name;
         }
-        public static string getInsertQuery(string tableName, IDictionary<string, Object> obj) { //IEnumerable<dynamic> 
+        public static string getInsertQuery(string tableName, IDictionary<string, Object> obj)
+        { //IEnumerable<dynamic> 
             var sbColumnList = "";
             var sbParameterList = "";
             var cmd = "";
-            foreach (KeyValuePair<string, object> property in obj) {
+            foreach (KeyValuePair<string, object> property in obj)
+            {
                 if (property.Value == null) continue;
                 // Column
                 sbColumnList += $"{property.Key}, ";
@@ -121,23 +137,32 @@ namespace Dapper.Contrib.Extensions {
             // }
             return cmd;
         }
-        public static string mapObj(object obj) {
+        public static string mapObj(object obj)
+        {
             var type = obj.GetType().Name.ToLower();
             if (type == "guid")
                 return $"'{obj.ToString().Replace("-", "").ToUpper()}'";
             else if (type == "datetime")
                 return obj.ToString().ParseDateTime();
-            else if (type != "string") {
+            else if (type != "string")
+            {
                 return obj.ToString();
-            } else
+            }
+            else
                 return $"'{obj}'";
         }
-        public static string ParseDateTime(this string datetime) {
-            var rs = $"TO_DATE('{DateTime.Parse(datetime).ToString("yyyy/MM/dd hh:mm:ss")}', 'YYYY/MM/DD HH24:mi:ss')";
+        public static string StringFormatDateToOracle(this string format)
+        {
+            return format.Replace("mm", "MI").ToUpper().Replace("HH", "HH24");
+        }
+        public static string ParseDateTime(this string datetime, string format = "yyyy/MM/dd HH:mm:ss")
+        {
+            var rs = $"TO_DATE('{DateTime.Parse(datetime).ToString(format)}', '{format.StringFormatDateToOracle()}')";
             return rs;
         }
-        public static string ParseDateTime(this DateTime datetime) {
-            var rs = $"TO_DATE('{datetime.ToString("yyyy/MM/dd hh:mm:ss")}', 'YYYY/MM/DD HH24:mi:ss')";
+        public static string ParseDateTime(this DateTime datetime, string format = "yyyy/MM/dd HH:mm:ss")
+        {
+            var rs = $"TO_DATE('{datetime.ToString(format)}', '{format.StringFormatDateToOracle()}')";
             return rs;
         }
     }
