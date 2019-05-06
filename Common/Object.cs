@@ -88,7 +88,7 @@ namespace TM.Core.Common
             get => _sortBy;
             set => _sortBy = value + (descending ? " desc" : "");
         }
-        public bool isExport { get; set; }
+        public bool is_export { get; set; }
     }
 
 }
